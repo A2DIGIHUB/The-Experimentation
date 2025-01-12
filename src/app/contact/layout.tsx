@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
 export const metadata: Metadata = {
@@ -10,6 +10,6 @@ interface LayoutProps {
   children: ReactNode;
 }
 
-export default function ContactLayout({ children }: LayoutProps) {
-  return <div>{children}</div>;
+export default function Layout({ children }: LayoutProps) {
+  return <div className="contact-layout">{children}</div>;
 }
