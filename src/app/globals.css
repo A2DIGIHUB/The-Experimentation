@@ -1,54 +1,8 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-:root {
-  --primary-blue: #0070f3;
-  --text-primary: #111827;
-  --text-secondary: #4B5563;
-}
-
-@layer base {
-  html {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
-    scroll-behavior: smooth;
-  }
-
-  body {
-    @apply bg-white text-[var(--text-primary)] font-sans;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-heading font-bold text-[var(--text-primary)];
-  }
-
-  p {
-    @apply text-[var(--text-secondary)];
-  }
-}
-
-@layer components {
-  .container-custom {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
-  }
-
-  .btn-primary {
-    @apply bg-[var(--primary-blue)] text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors;
-  }
-
-  .card {
-    @apply bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow;
-  }
-}
-
-/* Accessibility - Respect user's motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
+/* Tailwind Directives */
+@import 'tailwindcss/base';
+@import '../styles/variables.css';
+@import '../styles/base.css';
+@import 'tailwindcss/components';
+@import '../styles/components.css';
+@import 'tailwindcss/utilities';
+@import '../styles/utilities.css';
