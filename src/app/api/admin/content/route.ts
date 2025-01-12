@@ -6,7 +6,8 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
 // Middleware to verify admin token
 const verifyToken = async (request: Request) => {
-  const token = cookies().get('admin-token')?.value;
+  const cookieStore = await cookies();
+  const token = cookieStore.get('admin-token')?.value;
   
   if (!token) {
     return false;
