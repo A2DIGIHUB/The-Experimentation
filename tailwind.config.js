@@ -11,8 +11,8 @@ module.exports = {
         'primary-blue': '#0070f3',
       },
       fontFamily: {
-        sans: ['var(--font-inter)', 'system-ui', '-apple-system', 'sans-serif'],
-        heading: ['var(--font-montserrat)', 'Georgia', 'serif'],
+        sans: ['var(--font-inter)', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        heading: ['var(--font-montserrat)', 'Georgia', 'Cambria', 'Times New Roman', 'Times', 'serif'],
       },
     },
   },

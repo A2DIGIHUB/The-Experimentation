@@ -7,12 +7,14 @@ const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-inter',
+  fallback: ['system-ui', 'arial'],
 });
 
 const montserrat = Montserrat({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-montserrat',
+  fallback: ['georgia', 'times new roman'],
 });
 
 export const metadata = {
@@ -28,7 +30,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${montserrat.variable}`}>
-      <body className="min-h-screen bg-white font-sans antialiased">
+      <body className="min-h-screen bg-white font-sans antialiased flex flex-col">
         <Navigation />
         <main className="flex-grow">{children}</main>
         <Footer />

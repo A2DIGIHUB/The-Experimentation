@@ -4,6 +4,8 @@
 
 :root {
   --primary-blue: #0070f3;
+  --text-primary: #111827;
+  --text-secondary: #4B5563;
 }
 
 @layer base {
@@ -11,14 +13,19 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
   }
 
   body {
-    @apply bg-white text-gray-900 font-sans;
+    @apply bg-white text-[var(--text-primary)] font-sans;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading font-bold;
+    @apply font-heading font-bold text-[var(--text-primary)];
+  }
+
+  p {
+    @apply text-[var(--text-secondary)];
   }
 }
 
@@ -28,7 +35,7 @@
   }
 
   .btn-primary {
-    @apply bg-primary-blue text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors;
+    @apply bg-[var(--primary-blue)] text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors;
   }
 
   .card {
@@ -36,6 +43,7 @@
   }
 }
 
+/* Accessibility - Respect user's motion preferences */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
