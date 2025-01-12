@@ -1,13 +1,14 @@
+// Metadata configuration
+export const metadata = {
+  title: 'Contact Us | Health Blog',
+  description: 'Get in touch with us for support, questions, or collaboration opportunities.',
+};
+
+// Client component
 'use client';
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Contact Us | Health Blog',
-  description: 'Get in touch with us for support, questions, or collaboration opportunities.',
-}
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
