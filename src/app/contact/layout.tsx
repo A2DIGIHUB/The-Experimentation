@@ -11,5 +11,5 @@ interface LayoutProps {
 }
 
 export default function ContactLayout({ children }: LayoutProps) {
-  return <>{children}</>;
+  return <div>{children}</div>;
 }
