@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { ChangeEvent, FormEvent } from 'react';
 import { motion } from 'framer-motion';
 
 export default function ContactForm() {
@@ -11,13 +12,13 @@ export default function ContactForm() {
     message: '',
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Handle form submission logic here
     console.log('Form submitted:', formData);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
