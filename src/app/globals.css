@@ -3,16 +3,16 @@
 @tailwind utilities;
 
 :root {
-  /* Color Palette */
   --primary-blue: #0070f3;
-  
-  /* Typography - these are handled by next/font now */
-  font-feature-settings: 'kern';
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
 }
 
 @layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
   body {
     @apply bg-white text-gray-900 font-sans;
   }
@@ -36,7 +36,6 @@
   }
 }
 
-/* Accessibility */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
