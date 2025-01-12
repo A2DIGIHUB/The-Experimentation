@@ -6,10 +6,10 @@ export const metadata: Metadata = {
   description: 'Get in touch with us for support, questions, or collaboration opportunities.',
 };
 
-interface LayoutProps {
-  children: ReactNode;
-}
+type LayoutProps = {
+  children: React.ReactNode;
+};
 
-export default function Layout({ children }: LayoutProps) {
-  return <div className="contact-layout">{children}</div>;
+export default async function Layout({ children }: LayoutProps) {
+  return <section className="contact-layout">{children}</section>;
 }
