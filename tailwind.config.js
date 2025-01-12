@@ -8,18 +8,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'primary-blue': '#2B6CB0',
-        'secondary-teal': '#319795',
-        'accent-purple': '#805AD5',
-        'neutral-gray': '#718096',
+        'primary-blue': '#0070f3',
       },
       fontFamily: {
-        sans: ['var(--font-inter)'],
-        heading: ['var(--font-montserrat)'],
+        sans: ['var(--font-inter)', 'system-ui', '-apple-system', 'sans-serif'],
+        heading: ['var(--font-montserrat)', 'Georgia', 'serif'],
       },
     },
   },
-  plugins: [
-    require('@tailwindcss/line-clamp'),
-  ],
+  plugins: [],
 }

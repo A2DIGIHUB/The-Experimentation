@@ -1,37 +1,37 @@
-import './globals.css'
-import { Inter, Montserrat } from 'next/font/google'
-import Navigation from '@/components/Navigation'
-import Footer from '@/components/Footer'
+import './globals.css';
+import { Inter, Montserrat } from 'next/font/google';
+import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
 
 const inter = Inter({ 
   subsets: ['latin'],
+  display: 'swap',
   variable: '--font-inter',
-})
+});
 
 const montserrat = Montserrat({
   subsets: ['latin'],
+  display: 'swap',
   variable: '--font-montserrat',
-})
+});
 
 export const metadata = {
-  title: 'Health & Wellness Blog | Sickle Cell Foundation',
-  description: 'Your trusted source for health information and sickle cell awareness',
-}
+  title: 'African and Pregnant | Health & Wellness Blog',
+  description: 'Your trusted source for pregnancy and health information, tailored for African women.',
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} ${montserrat.variable} font-sans`}>
+    <html lang="en" className={`${inter.variable} ${montserrat.variable}`}>
+      <body className="min-h-screen bg-white font-sans">
         <Navigation />
-        <main className="min-h-screen">
-          {children}
-        </main>
+        <main>{children}</main>
         <Footer />
       </body>
     </html>
-  )
+  );
 }
