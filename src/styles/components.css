@@ -1,12 +1,24 @@
+/* Component Layer */
 @layer components {
+  /* Layout */
   .container-custom {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 
+  /* Buttons */
   .btn-primary {
-    @apply bg-[var(--primary-blue)] text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors;
+    @apply bg-[var(--primary-blue)] text-white px-6 py-2 rounded-lg 
+           hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 
+           focus:ring-blue-500 focus:ring-offset-2;
   }
 
+  .btn-secondary {
+    @apply bg-white text-[var(--primary-blue)] border border-[var(--primary-blue)] px-6 py-2 rounded-lg 
+           hover:bg-blue-50 transition-colors focus:outline-none focus:ring-2 
+           focus:ring-blue-500 focus:ring-offset-2;
+  }
+
+  /* Cards */
   .card {
     @apply bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow;
   }

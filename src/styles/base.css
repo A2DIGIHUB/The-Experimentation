@@ -1,4 +1,6 @@
+/* Base Layer */
 @layer base {
+  /* Typography */
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -6,15 +8,23 @@
     scroll-behavior: smooth;
   }
 
+  /* Body */
   body {
     @apply bg-white text-[var(--text-primary)] font-sans;
   }
 
+  /* Headings */
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading font-bold text-[var(--text-primary)];
   }
 
+  /* Paragraphs */
   p {
     @apply text-[var(--text-secondary)];
+  }
+
+  /* Links */
+  a {
+    @apply text-[var(--primary-blue)] hover:underline;
   }
 }

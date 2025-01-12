@@ -1,8 +1,12 @@
-/* Tailwind Directives */
-@import 'tailwindcss/base';
+/* Tailwind Base */
+@tailwind base;
 @import '../styles/variables.css';
 @import '../styles/base.css';
-@import 'tailwindcss/components';
+
+/* Tailwind Components */
+@tailwind components;
 @import '../styles/components.css';
-@import 'tailwindcss/utilities';
+
+/* Tailwind Utilities */
+@tailwind utilities;
 @import '../styles/utilities.css';
