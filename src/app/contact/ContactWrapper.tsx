@@ -1,9 +1,10 @@
 'use client';
 
+import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
 
 const ContactForm = dynamic(() => import('./ContactForm'), {
-  loading: () => <div>Loading...</div>
+  loading: () => <div className="animate-pulse">Loading form...</div>
 });
 
 export default function ContactWrapper() {
@@ -14,7 +15,9 @@ export default function ContactWrapper() {
         Have questions or want to get in touch? Fill out the form below and we'll get back to you as soon as possible.
       </p>
       <div className="max-w-2xl mx-auto">
-        <ContactForm />
+        <Suspense fallback={<div className="animate-pulse">Loading form...</div>}>
+          <ContactForm />
+        </Suspense>
       </div>
     </div>
   );

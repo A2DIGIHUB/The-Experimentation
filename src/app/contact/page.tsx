@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
-import ContactWrapper from './ContactWrapper';
+import dynamic from 'next/dynamic';
+
+const ContactWrapper = dynamic(() => import('./ContactWrapper'));
 
 export const metadata: Metadata = {
   title: 'Contact Us | Health Blog',
