@@ -28,6 +28,7 @@ A Next.js-based blog platform focused on providing information and support for A
    ```
    # Add your environment variables here
    NEXT_PUBLIC_API_URL=your_api_url
+   BLOB_READ_WRITE_TOKEN=your_blob_token
    ```
 4. Run the development server:
    ```bash
@@ -44,6 +45,28 @@ A Next.js-based blog platform focused on providing information and support for A
 - `npm run test` - Run tests
 - `npm run test:watch` - Run tests in watch mode
 - `npm run test:coverage` - Run tests with coverage report
+
+## Environment Variables
+
+Create a `.env.local` file with the following variables:
+```
+# Add your environment variables here
+NEXT_PUBLIC_API_URL=your_api_url
+
+# Vercel Blob Storage (required for file uploads)
+BLOB_READ_WRITE_TOKEN=your_blob_token
+```
+
+### Setting up Vercel Blob Storage
+
+1. Go to your Vercel dashboard
+2. Select your project
+3. Go to the "Storage" tab
+4. Click on "Connect Store" and select "Blob"
+5. Follow the setup instructions
+6. Copy the provided `BLOB_READ_WRITE_TOKEN`
+7. Add it to your environment variables in the Vercel dashboard
+8. Also add it to your local `.env.local` file for development
 
 ## Testing
 

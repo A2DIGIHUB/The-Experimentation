@@ -6,6 +6,13 @@ import crypto from 'crypto';
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];
 
+// CORS headers
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+};
+
 // Utility to generate safe filename
 const generateSafeFileName = (originalName: string): string => {
   const ext = originalName.split('.').pop();
@@ -22,16 +29,13 @@ async function scanForVirus(buffer: Buffer): Promise<boolean> {
 
 export async function POST(request: Request) {
   try {
-    // Add CORS headers
-    const headers = {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
-    };
-
-    // Handle preflight requests
-    if (request.method === 'OPTIONS') {
-      return new NextResponse(null, { headers });
+    // Check if blob storage is configured
+    if (!process.env.BLOB_READ_WRITE_TOKEN) {
+      console.error('BLOB_READ_WRITE_TOKEN is not configured');
+      return NextResponse.json(
+        { error: 'File upload service is not configured' },
+        { status: 503, headers: corsHeaders }
+      );
     }
 
     const formData = await request.formData();
@@ -40,23 +44,23 @@ export async function POST(request: Request) {
     if (!file) {
       return NextResponse.json(
         { error: 'No file provided' },
-        { status: 400, headers }
+        { status: 400, headers: corsHeaders }
       );
     }
 
     // Validate file size
     if (file.size > MAX_FILE_SIZE) {
       return NextResponse.json(
-        { error: 'File size exceeds limit' },
-        { status: 400, headers }
+        { error: `File size exceeds limit of ${MAX_FILE_SIZE / (1024 * 1024)}MB` },
+        { status: 400, headers: corsHeaders }
       );
     }
 
     // Validate file type
     if (!ALLOWED_FILE_TYPES.includes(file.type)) {
       return NextResponse.json(
-        { error: 'Invalid file type' },
-        { status: 400, headers }
+        { error: `Invalid file type. Allowed types: ${ALLOWED_FILE_TYPES.join(', ')}` },
+        { status: 400, headers: corsHeaders }
       );
     }
 
@@ -69,42 +73,48 @@ export async function POST(request: Request) {
     if (!isSafe) {
       return NextResponse.json(
         { error: 'File failed security scan' },
-        { status: 400, headers }
+        { status: 400, headers: corsHeaders }
       );
     }
 
     // Generate safe filename
     const fileName = generateSafeFileName(file.name);
 
-    // Upload to Vercel Blob Storage
-    const blob = await put(fileName, file, {
-      access: 'public',
-      addRandomSuffix: true,
-    });
+    try {
+      // Upload to Vercel Blob Storage
+      const blob = await put(fileName, file, {
+        access: 'public',
+        addRandomSuffix: true,
+      });
 
-    // Return success with file details
-    return NextResponse.json({
-      message: 'File uploaded successfully',
-      fileName: blob.pathname,
-      url: blob.url,
-    }, { headers });
+      // Return success with file details
+      return NextResponse.json({
+        message: 'File uploaded successfully',
+        fileName: blob.pathname,
+        url: blob.url,
+        contentType: file.type,
+        originalName: file.name,
+        uploadedAt: new Date().toISOString(),
+      }, { headers: corsHeaders });
+
+    } catch (blobError) {
+      console.error('Blob storage error:', blobError instanceof Error ? blobError.message : String(blobError));
+      return NextResponse.json(
+        { error: 'Failed to store file' },
+        { status: 500, headers: corsHeaders }
+      );
+    }
 
   } catch (error) {
     console.error('Upload error:', error instanceof Error ? error.message : String(error));
     return NextResponse.json(
-      { error: 'Failed to upload file' },
-      { status: 500 }
+      { error: 'Failed to process file upload' },
+      { status: 500, headers: corsHeaders }
     );
   }
 }
 
-// Handle OPTIONS requests for CORS
+// Handle OPTIONS request for CORS
 export async function OPTIONS() {
-  return new NextResponse(null, {
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
-    },
-  });
+  return NextResponse.json({}, { headers: corsHeaders });
 }
