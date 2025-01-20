@@ -39,19 +39,19 @@ export default function Home() {
             <ScienceHighlight
               title="The Mystery of Dark Matter"
               description="Uncover the invisible force that holds galaxies together."
-              imageUrl="/images/dark-matter.jpg"
+              imageUrl="/images/science/dark-matter.jpg"
               category="Physics"
             />
             <ScienceHighlight
               title="CRISPR Revolution"
               description="How gene editing is transforming medicine and biology."
-              imageUrl="/images/crispr.jpg"
+              imageUrl="/images/science/crispr.jpg"
               category="Biology"
             />
             <ScienceHighlight
               title="Quantum Computing Basics"
               description="Understanding the future of computation."
-              imageUrl="/images/quantum.jpg"
+              imageUrl="/images/science/quantum.jpg"
               category="Technology"
             />
           </div>
