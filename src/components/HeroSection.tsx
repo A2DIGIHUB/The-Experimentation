@@ -15,7 +15,7 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section className="relative min-h-[80vh] flex items-center">
+    <section className="relative min-h-[60vh] flex items-center">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         {mounted && (
@@ -58,39 +58,39 @@ export default function HeroSection() {
       </div>
 
       {/* Content */}
-      <div className="container mx-auto px-4 py-16 relative z-10">
+      <div className="container mx-auto px-4 py-12 relative z-10">
         <div className="max-w-4xl mx-auto text-center text-white">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="mb-8"
+            className="mb-6"
           >
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 text-white leading-tight">
+            <h1 className="text-4xl md:text-6xl font-bold mb-4 text-white leading-tight">
               Advancing Healthcare
               <span className="block mt-2">Through Science</span>
             </h1>
-            <p className="text-xl md:text-2xl text-blue-50 max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl text-blue-50 max-w-3xl mx-auto">
               Discover groundbreaking medical research, innovative clinical trials, and the future of healthcare.
             </p>
           </motion.div>
           
           <motion.div 
-            className="flex flex-wrap justify-center gap-6 mb-16"
+            className="flex flex-wrap justify-center gap-4 mb-12"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
             <Link 
               href="/research"
-              className="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-4 rounded-lg font-semibold transition-all flex items-center gap-2 shadow-lg hover:shadow-emerald-500/20 hover:-translate-y-0.5"
+              className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg font-semibold transition-all flex items-center gap-2 shadow-lg hover:shadow-emerald-500/20 hover:-translate-y-0.5"
             >
               <FontAwesomeIcon icon={faMicroscope} className="h-5 w-5" />
               Explore Research
             </Link>
             <Link 
               href="/experiments"
-              className="bg-white hover:bg-blue-50 text-blue-900 px-8 py-4 rounded-lg font-semibold transition-all flex items-center gap-2 shadow-lg hover:shadow-white/20 hover:-translate-y-0.5"
+              className="bg-white hover:bg-blue-50 text-blue-900 px-6 py-3 rounded-lg font-semibold transition-all flex items-center gap-2 shadow-lg hover:shadow-white/20 hover:-translate-y-0.5"
             >
               <FontAwesomeIcon icon={faFlask} className="h-5 w-5" />
               View Experiments
@@ -98,29 +98,26 @@ export default function HeroSection() {
           </motion.div>
 
           <motion.div 
-            className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto"
+            className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
           >
-            {[
-              { icon: faHeartPulse, label: 'Cutting-edge Medical Research', description: 'Pioneering breakthroughs in healthcare' },
-              { icon: faMicroscope, label: 'Advanced Laboratory Studies', description: 'State-of-the-art facilities and methods' },
-              { icon: faFlask, label: 'Innovative Clinical Trials', description: 'Transforming research into treatments' }
-            ].map((item, index) => (
-              <motion.div 
-                key={index}
-                className="text-center p-6 rounded-xl bg-white/10 backdrop-blur-sm"
-                whileHover={{ y: -5 }}
-                transition={{ duration: 0.2 }}
-              >
-                <div className="bg-gradient-to-br from-blue-500 to-emerald-500 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 shadow-lg">
-                  <FontAwesomeIcon icon={item.icon} className="h-8 w-8 text-white" />
-                </div>
-                <h3 className="text-lg font-semibold mb-2 text-white">{item.label}</h3>
-                <p className="text-sm text-blue-100">{item.description}</p>
-              </motion.div>
-            ))}
+            <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg">
+              <FontAwesomeIcon icon={faHeartPulse} className="h-8 w-8 text-emerald-400 mb-3" />
+              <h3 className="text-lg font-semibold mb-2">Clinical Impact</h3>
+              <p className="text-blue-100 text-sm">Transforming research into practical healthcare solutions</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg">
+              <FontAwesomeIcon icon={faMicroscope} className="h-8 w-8 text-emerald-400 mb-3" />
+              <h3 className="text-lg font-semibold mb-2">Latest Research</h3>
+              <p className="text-blue-100 text-sm">Cutting-edge discoveries in medical science</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg">
+              <FontAwesomeIcon icon={faFlask} className="h-8 w-8 text-emerald-400 mb-3" />
+              <h3 className="text-lg font-semibold mb-2">Innovation</h3>
+              <p className="text-blue-100 text-sm">Pioneering new approaches to treatment</p>
+            </div>
           </motion.div>
         </div>
       </div>
