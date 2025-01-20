@@ -1,94 +1,85 @@
-import Image from 'next/image'
-import Link from 'next/link'
-import NewsletterSignup from '@/components/NewsletterSignup'
-import ArticleCard from '@/components/ArticleCard'
+import Image from 'next/image';
+import Link from 'next/link';
+import NewsletterSignup from '@/components/NewsletterSignup';
+import ScienceHighlight from '@/components/ScienceHighlight';
+import ExperimentShowcase from '@/components/ExperimentShowcase';
+import ScienceStats from '@/components/ScienceStats';
 
 export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary-blue to-secondary-teal text-white py-20">
-        <div className="container-custom">
+      <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20">
+        <div className="container mx-auto px-4">
           <div className="max-w-3xl">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Your Journey to Better Health Starts Here
+              The-Experimentation
             </h1>
+            <p className="text-2xl mb-4">Where Science Comes to Life</p>
             <p className="text-xl mb-8">
-              Discover expert health insights and join our mission to support sickle cell awareness
+              Discover the wonders of science through interactive experiments, engaging articles, and expert explanations.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link href="/articles" className="btn-primary bg-white text-primary-blue hover:bg-gray-100">
-                Read Articles
+              <Link href="/articles" className="btn-primary bg-white text-blue-600 hover:bg-gray-100">
+                Explore Articles
               </Link>
-              <Link href="/sickle-cell" className="btn-primary border-2 border-white hover:bg-white hover:text-primary-blue">
-                Learn About Sickle Cell
+              <Link href="/resources" className="btn-primary border-2 border-white hover:bg-white hover:text-blue-600">
+                Start Experimenting
               </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Featured Articles */}
-      <section className="py-16">
-        <div className="container-custom">
-          <h2 className="text-3xl font-bold mb-8">Latest Articles</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Sample articles - replace with dynamic data */}
-            <ArticleCard
-              title="Understanding Sickle Cell Disease"
-              excerpt="Learn about the latest research and treatments for sickle cell disease..."
-              category="Health"
-              readTime="5 min read"
-              image="/images/article1.jpg"
-              slug="understanding-sickle-cell"
+      {/* Science Highlights */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-12 text-center">Latest in Science</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            <ScienceHighlight
+              title="The Mystery of Dark Matter"
+              description="Uncover the invisible force that holds galaxies together."
+              imageUrl="/images/dark-matter.jpg"
+              category="Physics"
             />
-            <ArticleCard
-              title="Nutrition Tips for Wellness"
-              excerpt="Discover the best foods to maintain your health and boost immunity..."
-              category="Wellness"
-              readTime="4 min read"
-              image="/images/article2.jpg"
-              slug="nutrition-tips"
+            <ScienceHighlight
+              title="CRISPR Revolution"
+              description="How gene editing is transforming medicine and biology."
+              imageUrl="/images/crispr.jpg"
+              category="Biology"
             />
-            <ArticleCard
-              title="Mental Health Awareness"
-              excerpt="Expert advice on maintaining good mental health in challenging times..."
-              category="Mental Health"
-              readTime="6 min read"
-              image="/images/article3.jpg"
-              slug="mental-health-awareness"
+            <ScienceHighlight
+              title="Quantum Computing Basics"
+              description="Understanding the future of computation."
+              imageUrl="/images/quantum.jpg"
+              category="Technology"
             />
           </div>
         </div>
       </section>
+
+      {/* Experiment Showcase */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <ExperimentShowcase />
+        </div>
+      </section>
+
+      {/* Science Stats */}
+      <ScienceStats />
 
       {/* Newsletter Section */}
-      <section className="bg-gray-50 py-16">
-        <div className="container-custom">
-          <NewsletterSignup />
-        </div>
-      </section>
-
-      {/* Impact Statistics */}
-      <section className="py-16 bg-white">
-        <div className="container-custom">
-          <h2 className="text-3xl font-bold text-center mb-12">Our Impact</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div className="p-6">
-              <div className="text-4xl font-bold text-primary-blue mb-2">1000+</div>
-              <div className="text-gray-600">Patients Supported</div>
-            </div>
-            <div className="p-6">
-              <div className="text-4xl font-bold text-primary-blue mb-2">50+</div>
-              <div className="text-gray-600">Healthcare Partners</div>
-            </div>
-            <div className="p-6">
-              <div className="text-4xl font-bold text-primary-blue mb-2">$2M+</div>
-              <div className="text-gray-600">Raised for Research</div>
-            </div>
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="text-3xl font-bold mb-4">Stay Curious</h2>
+            <p className="text-gray-600 mb-8">
+              Subscribe to our newsletter for weekly science experiments, breakthrough discoveries, and fascinating insights.
+            </p>
+            <NewsletterSignup />
           </div>
         </div>
       </section>
     </div>
-  )
+  );
 }
