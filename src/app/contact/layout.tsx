@@ -1,5 +1,10 @@
-import { Metadata } from 'next';
+import { Metadata, Viewport } from 'next';
 import { ReactNode } from 'react';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
 
 export const metadata: Metadata = {
   title: 'Contact Us | African and Pregnant',

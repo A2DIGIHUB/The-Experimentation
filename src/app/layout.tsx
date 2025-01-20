@@ -2,6 +2,7 @@ import './globals.css';
 import { Inter, Montserrat } from 'next/font/google';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import type { Viewport } from 'next';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -17,10 +18,14 @@ const montserrat = Montserrat({
   fallback: ['georgia', 'times new roman'],
 });
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
+
 export const metadata = {
   title: 'African and Pregnant | Health & Wellness Blog',
   description: 'Your trusted source for pregnancy and health information, tailored for African women.',
-  viewport: 'width=device-width, initial-scale=1',
 };
 
 export default function RootLayout({

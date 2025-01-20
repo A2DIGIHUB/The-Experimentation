@@ -3,7 +3,21 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const resources = [
+interface ResourceItem {
+  title: string;
+  description: string;
+  type: string;
+  link: string;
+  tags: string[];
+  category?: string;
+}
+
+interface ResourceCategory {
+  category: string;
+  items: ResourceItem[];
+}
+
+const resources: ResourceCategory[] = [
   {
     category: 'Medical Information',
     items: [
