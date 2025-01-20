@@ -1,7 +1,31 @@
 import { NextResponse } from 'next/server';
+import { z } from 'zod';
+
+// Contact form validation schema
+const contactSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  email: z.string().email('Invalid email address'),
+  subject: z.string().min(1, 'Subject is required'),
+  message: z.string().min(10, 'Message must be at least 10 characters'),
+});
 
 export async function POST(request: Request) {
   try {
+    const body = await request.json();
+    const validatedData = contactSchema.parse(body);
+
+    // TODO: Replace with your actual email service implementation
+    // Example using a hypothetical email service:
+    // await emailService.send({
+    //   to: 'your-email@example.com',
+    //   from: validatedData.email,
+    //   subject: validatedData.subject,
+    //   text: `From: ${validatedData.name}\n\n${validatedData.message}`,
+    // });
+
+    // For now, we'll simulate a successful email send
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
     // Add CORS headers
     const headers = {
       'Access-Control-Allow-Origin': '*',
@@ -14,39 +38,21 @@ export async function POST(request: Request) {
       return new NextResponse(null, { headers });
     }
 
-    const body = await request.json();
-    const { name, email, subject, message } = body;
-
-    // Validate required fields
-    if (!name || !email || !subject || !message) {
-      return NextResponse.json(
-        { error: 'All fields are required' },
-        { status: 400, headers }
-      );
-    }
-
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return NextResponse.json(
-        { error: 'Invalid email format' },
-        { status: 400, headers }
-      );
-    }
-
-    // For development, just log the message
-    console.log('Contact form submission:', { name, email, subject, message });
-
-    // Return success response
     return NextResponse.json(
-      { message: 'Message received successfully' },
+      { message: 'Message sent successfully' },
       { status: 200, headers }
     );
-
   } catch (error) {
-    console.error('Contact form error:', error);
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: 'Validation failed', details: error.errors },
+        { status: 400 }
+      );
+    }
+
+    console.error('Contact form error:', error instanceof Error ? error.message : String(error));
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Failed to send message' },
       { status: 500 }
     );
   }

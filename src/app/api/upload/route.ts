@@ -1,4 +1,26 @@
 import { NextResponse } from 'next/server';
+import { writeFile, mkdir } from 'fs/promises';
+import { join } from 'path';
+import crypto from 'crypto';
+
+// Configuration
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];
+const UPLOAD_DIR = join(process.cwd(), 'public', 'uploads');
+
+// Utility to generate safe filename
+const generateSafeFileName = (originalName: string): string => {
+  const ext = originalName.split('.').pop();
+  const randomName = crypto.randomBytes(16).toString('hex');
+  return `${randomName}.${ext}`;
+};
+
+// Mock virus scan function - replace with actual implementation
+async function scanForVirus(buffer: Buffer): Promise<boolean> {
+  // Simulate virus scan
+  await new Promise(resolve => setTimeout(resolve, 1000));
+  return true; // Return true if file is safe
+}
 
 export async function POST(request: Request) {
   try {
@@ -24,41 +46,56 @@ export async function POST(request: Request) {
       );
     }
 
-    // Validate file size (5MB limit)
-    const MAX_FILE_SIZE = 5 * 1024 * 1024;
+    // Validate file size
     if (file.size > MAX_FILE_SIZE) {
       return NextResponse.json(
-        { error: 'File size exceeds 5MB limit' },
+        { error: 'File size exceeds limit' },
         { status: 400, headers }
       );
     }
 
     // Validate file type
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];
-    if (!allowedTypes.includes(file.type)) {
+    if (!ALLOWED_FILE_TYPES.includes(file.type)) {
       return NextResponse.json(
-        { error: 'Invalid file type. Allowed types: JPG, PNG, GIF, PDF' },
+        { error: 'Invalid file type' },
         { status: 400, headers }
       );
     }
 
-    // For development, just log the file details
-    console.log('File upload:', {
-      name: file.name,
-      type: file.type,
-      size: file.size
-    });
+    // Read file buffer
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
 
-    // Return a mock URL for development
+    // Scan for viruses
+    const isSafe = await scanForVirus(buffer);
+    if (!isSafe) {
+      return NextResponse.json(
+        { error: 'File failed security scan' },
+        { status: 400, headers }
+      );
+    }
+
+    // Generate safe filename
+    const fileName = generateSafeFileName(file.name);
+    const filePath = join(UPLOAD_DIR, fileName);
+
+    // Create uploads directory if it doesn't exist
+    await mkdir(UPLOAD_DIR, { recursive: true });
+
+    // Save file
+    await writeFile(filePath, new Uint8Array(bytes));
+
+    // Return success with file details
     return NextResponse.json({
-      url: `/uploads/${file.name}`,
-      success: true
+      message: 'File uploaded successfully',
+      fileName,
+      url: `/uploads/${fileName}`,
     }, { headers });
 
   } catch (error) {
-    console.error('File upload error:', error);
+    console.error('Upload error:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Failed to upload file' },
       { status: 500 }
     );
   }
