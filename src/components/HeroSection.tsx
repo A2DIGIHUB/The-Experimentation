@@ -5,26 +5,37 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeartPulse, faMicroscope, faFlask } from '@fortawesome/free-solid-svg-icons';
+import { useState, useEffect } from 'react';
 
 export default function HeroSection() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
     <section className="relative min-h-[80vh] flex items-center">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
-        <Image
-          src="/images/hero-bg.jpg"
-          alt="Medical Research Background"
-          fill
-          className="object-cover"
-          priority
-        />
+        {mounted && (
+          <Image
+            src="/images/hero-bg.jpg"
+            alt="Medical Research Background"
+            fill
+            className="object-cover"
+            priority
+            sizes="100vw"
+            quality={90}
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-950/90 via-blue-900/85 to-blue-800/80"></div>
       </div>
 
       {/* Animated Particles */}
       <div className="absolute inset-0 z-0">
         <div className="absolute w-full h-full">
-          {[...Array(20)].map((_, i) => (
+          {mounted && [...Array(20)].map((_, i) => (
             <motion.div
               key={i}
               className="absolute w-2 h-2 bg-blue-400/20 rounded-full"
