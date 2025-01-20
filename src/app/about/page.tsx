@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { AnimatedSection } from './components/AnimatedSection';
 
 export const metadata: Metadata = {
   title: 'About Us | The-Experimentation',
@@ -39,12 +39,7 @@ export default function AboutPage() {
     <div className="min-h-screen py-20">
       {/* Hero Section */}
       <section className="container mx-auto px-4 mb-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center max-w-3xl mx-auto"
-        >
+        <AnimatedSection className="text-center max-w-3xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
             Making Science Accessible to Everyone
           </h1>
@@ -52,18 +47,14 @@ export default function AboutPage() {
             We believe that understanding science should be engaging, interactive, and accessible to all.
             Through clear explanations and hands-on experiments, we're making complex scientific concepts approachable.
           </p>
-        </motion.div>
+        </AnimatedSection>
       </section>
 
       {/* Mission Section */}
       <section className="bg-blue-50 py-16">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
+            <AnimatedSection direction="right" delay={0.2}>
               <h2 className="text-3xl font-bold mb-6">Our Mission</h2>
               <p className="text-lg text-gray-600 mb-4">
                 At The-Experimentation, we're dedicated to breaking down the barriers between complex scientific concepts
@@ -74,20 +65,15 @@ export default function AboutPage() {
                 Through interactive experiments, clear explanations, and engaging content, we're building a community
                 where curiosity thrives and scientific discovery becomes an adventure accessible to everyone.
               </p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="relative h-[400px]"
-            >
+            </AnimatedSection>
+            <AnimatedSection direction="left" delay={0.4} className="relative h-[400px]">
               <Image
                 src="/images/about/mission.jpg"
                 alt="Our Mission"
                 fill
                 className="object-cover rounded-lg"
               />
-            </motion.div>
+            </AnimatedSection>
           </div>
         </div>
       </section>
@@ -95,21 +81,14 @@ export default function AboutPage() {
       {/* Team Section */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-3xl font-bold text-center mb-12"
-          >
-            Meet Our Team
-          </motion.h2>
+          <AnimatedSection className="text-center mb-12">
+            <h2 className="text-3xl font-bold">Meet Our Team</h2>
+          </AnimatedSection>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {teamMembers.map((member, index) => (
-              <motion.div
+              <AnimatedSection
                 key={member.name}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
+                delay={index * 0.1}
                 className="bg-white rounded-lg shadow-lg overflow-hidden"
               >
                 <div className="relative h-48">
@@ -125,7 +104,7 @@ export default function AboutPage() {
                   <p className="text-blue-600 mb-4">{member.role}</p>
                   <p className="text-gray-600">{member.bio}</p>
                 </div>
-              </motion.div>
+              </AnimatedSection>
             ))}
           </div>
         </div>
@@ -134,48 +113,28 @@ export default function AboutPage() {
       {/* Values Section */}
       <section className="bg-blue-900 text-white py-16">
         <div className="container mx-auto px-4">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-3xl font-bold text-center mb-12"
-          >
-            Our Values
-          </motion.h2>
+          <AnimatedSection className="text-center mb-12">
+            <h2 className="text-3xl font-bold">Our Values</h2>
+          </AnimatedSection>
           <div className="grid md:grid-cols-3 gap-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-center"
-            >
+            <AnimatedSection delay={0.2} className="text-center">
               <h3 className="text-xl font-bold mb-4">Accessibility</h3>
               <p className="text-blue-200">
                 Making scientific knowledge accessible to everyone, regardless of their background.
               </p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-center"
-            >
+            </AnimatedSection>
+            <AnimatedSection delay={0.3} className="text-center">
               <h3 className="text-xl font-bold mb-4">Engagement</h3>
               <p className="text-blue-200">
                 Creating interactive and engaging ways to learn about science.
               </p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="text-center"
-            >
+            </AnimatedSection>
+            <AnimatedSection delay={0.4} className="text-center">
               <h3 className="text-xl font-bold mb-4">Accuracy</h3>
               <p className="text-blue-200">
                 Ensuring all our content is scientifically accurate and well-researched.
               </p>
-            </motion.div>
+            </AnimatedSection>
           </div>
         </div>
       </section>
