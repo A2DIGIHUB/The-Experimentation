@@ -1,11 +1,11 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
-export default function SearchPage() {
+function SearchResults() {
   const searchParams = useSearchParams();
   const query = searchParams.get('q');
   const [isLoading, setIsLoading] = useState(true);
@@ -51,19 +51,29 @@ export default function SearchPage() {
       ) : results.length > 0 ? (
         <div className="grid gap-6">
           {results.map((result, index) => (
-            <div key={index} className="bg-white rounded-lg shadow-md p-6">
-              {/* Result item content */}
+            <div key={index} className="bg-white rounded-lg shadow p-6">
+              <h2 className="text-xl font-semibold mb-2">{result.title}</h2>
+              <p className="text-gray-600">{result.excerpt}</p>
             </div>
           ))}
         </div>
       ) : (
-        <div className="text-center py-20">
-          <p className="text-gray-600 mb-4">No results found for "{query}"</p>
-          <p className="text-gray-500">
-            Try adjusting your search terms or browse our categories below.
-          </p>
-        </div>
+        <p>No results found for "{query}".</p>
       )}
     </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={
+      <div className="container mx-auto px-4 py-20">
+        <div className="flex items-center justify-center">
+          <FontAwesomeIcon icon={faSpinner} className="w-8 h-8 animate-spin text-blue-600" />
+        </div>
+      </div>
+    }>
+      <SearchResults />
+    </Suspense>
   );
 }
