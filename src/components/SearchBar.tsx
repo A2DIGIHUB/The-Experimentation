@@ -5,7 +5,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/navigation';
 
-export default function SearchBar() {
+interface SearchBarProps {
+  onSearch?: () => void;
+}
+
+export default function SearchBar({ onSearch }: SearchBarProps) {
   const [query, setQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
@@ -19,6 +23,7 @@ export default function SearchBar() {
     try {
       // TODO: Implement actual search functionality
       router.push(`/search?q=${encodeURIComponent(query)}`);
+      onSearch?.(); // Call onSearch if provided
     } finally {
       setIsSearching(false);
     }

@@ -33,6 +33,10 @@ export default function Navbar() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const handleSearchComplete = () => {
+    setIsSearchOpen(false);
+  };
+
   return (
     <>
       <nav 
@@ -84,7 +88,7 @@ export default function Navbar() {
                 </Link>
               </div>
               <button
-                onClick={() => setIsSearchOpen(!isSearchOpen)}
+                onClick={() => setIsSearchOpen(true)}
                 className="text-gray-600 hover:text-blue-900 focus:outline-none p-2 rounded-full hover:bg-gray-100 transition-colors"
                 aria-label="Toggle search"
               >
@@ -95,7 +99,7 @@ export default function Navbar() {
             {/* Mobile menu button */}
             <div className="md:hidden flex items-center space-x-4">
               <button
-                onClick={() => setIsSearchOpen(!isSearchOpen)}
+                onClick={() => setIsSearchOpen(true)}
                 className="text-gray-600 hover:text-blue-900 focus:outline-none p-2"
                 aria-label="Toggle search"
               >
@@ -174,7 +178,7 @@ export default function Navbar() {
               className="fixed top-20 left-1/2 -translate-x-1/2 w-full max-w-2xl mx-auto px-4 z-50"
             >
               <div className="bg-white rounded-lg shadow-xl p-4">
-                <SearchBar onSearch={() => setIsSearchOpen(false)} />
+                <SearchBar onSearch={handleSearchComplete} />
               </div>
             </motion.div>
           </>
