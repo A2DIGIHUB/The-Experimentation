@@ -2,13 +2,25 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
   try {
+    // Add CORS headers
+    const headers = {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+    };
+
+    // Handle preflight requests
+    if (request.method === 'OPTIONS') {
+      return new NextResponse(null, { headers });
+    }
+
     const formData = await request.formData();
     const file = formData.get('file') as File;
 
     if (!file) {
       return NextResponse.json(
         { error: 'No file provided' },
-        { status: 400 }
+        { status: 400, headers }
       );
     }
 
@@ -17,7 +29,7 @@ export async function POST(request: Request) {
     if (file.size > MAX_FILE_SIZE) {
       return NextResponse.json(
         { error: 'File size exceeds 5MB limit' },
-        { status: 400 }
+        { status: 400, headers }
       );
     }
 
@@ -26,18 +38,22 @@ export async function POST(request: Request) {
     if (!allowedTypes.includes(file.type)) {
       return NextResponse.json(
         { error: 'Invalid file type. Allowed types: JPG, PNG, GIF, PDF' },
-        { status: 400 }
+        { status: 400, headers }
       );
     }
 
-    // In production, implement your file upload logic here
-    // Example: Upload to cloud storage (AWS S3, Google Cloud Storage, etc.)
-    
-    // For now, we'll just simulate a successful response
-    return NextResponse.json({
-      url: 'https://example.com/uploads/' + file.name,
-      success: true
+    // For development, just log the file details
+    console.log('File upload:', {
+      name: file.name,
+      type: file.type,
+      size: file.size
     });
+
+    // Return a mock URL for development
+    return NextResponse.json({
+      url: `/uploads/${file.name}`,
+      success: true
+    }, { headers });
 
   } catch (error) {
     console.error('File upload error:', error);
@@ -46,4 +62,15 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
+}
+
+// Handle OPTIONS requests for CORS
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+    },
+  });
 }
