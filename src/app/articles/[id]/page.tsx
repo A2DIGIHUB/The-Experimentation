@@ -146,18 +146,30 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
           <ReactMarkdown 
             remarkPlugins={[remarkGfm]}
             components={{
-              h2: ({node, ...props}) => <h2 {...props} />,
-              h3: ({node, ...props}) => <h3 {...props} />,
-              p: ({node, ...props}) => <p {...props} />,
-              strong: ({node, ...props}) => <strong {...props} />,
-              em: ({node, ...props}) => <em {...props} />,
-              ul: ({node, ...props}) => <ul {...props} />,
-              ol: ({node, ...props}) => <ol {...props} />,
-              li: ({node, ...props}) => <li {...props} />,
+              h1: ({node, ...props}) => <h1 {...props} className="text-3xl font-bold mb-6" />,
+              h2: ({node, ...props}) => <h2 {...props} className="text-2xl font-bold mb-4" />,
+              h3: ({node, ...props}) => <h3 {...props} className="text-xl font-bold mb-3" />,
+              p: ({node, ...props}) => <p {...props} className="mb-4" />,
+              ul: ({node, ...props}) => <ul {...props} className="list-disc list-inside mb-4" />,
+              ol: ({node, ...props}) => <ol {...props} className="list-decimal list-inside mb-4" />,
+              li: ({node, ...props}) => <li {...props} className="mb-2" />,
               a: ({node, ...props}) => <a {...props} target="_blank" rel="noopener noreferrer" />,
               blockquote: ({node, ...props}) => <blockquote {...props} />,
-              code: ({node, inline, ...props}) => 
-                inline ? <code {...props} /> : <pre><code {...props} /></pre>,
+              code: ({node, className, children, ...props}: any) => {
+                const match = /language-(\w+)/.exec(className || '');
+                const isInline = !match;
+                return isInline ? (
+                  <code {...props} className={className}>
+                    {children}
+                  </code>
+                ) : (
+                  <pre className="p-4 bg-gray-100 rounded-lg overflow-x-auto">
+                    <code {...props} className={className}>
+                      {children}
+                    </code>
+                  </pre>
+                );
+              },
             }}
           >
             {article.content}
