@@ -2,7 +2,8 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import Image from 'next/image';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDna, faFlask, faAtom } from '@fortawesome/free-solid-svg-icons';
 
 const floatingAnimation = {
   initial: { y: 0 },
@@ -110,7 +111,7 @@ export default function HeroSection() {
             </motion.div>
           </motion.div>
 
-          {/* Right Column - Floating Images */}
+          {/* Right Column - Floating Icons */}
           <motion.div 
             initial="initial"
             animate="animate"
@@ -119,14 +120,11 @@ export default function HeroSection() {
             {/* DNA Structure */}
             <motion.div
               variants={floatingAnimation}
-              className="absolute top-0 right-0"
+              className="absolute top-0 right-0 text-white/80"
             >
-              <Image
-                src="/images/science/dna-structure.png"
-                alt="DNA Structure"
-                width={200}
-                height={300}
-                className="rounded-lg shadow-lg"
+              <FontAwesomeIcon 
+                icon={faDna} 
+                className="w-[200px] h-[300px] drop-shadow-[0_0_15px_rgba(59,130,246,0.3)]" 
               />
             </motion.div>
 
@@ -144,14 +142,11 @@ export default function HeroSection() {
                   }
                 }
               }}
-              className="absolute bottom-20 left-0"
+              className="absolute bottom-20 left-0 text-white/80"
             >
-              <Image
-                src="/images/science/chemistry-flask.png"
-                alt="Chemistry Flask"
-                width={150}
-                height={150}
-                className="rounded-lg shadow-lg"
+              <FontAwesomeIcon 
+                icon={faFlask} 
+                className="w-[150px] h-[150px] drop-shadow-[0_0_15px_rgba(59,130,246,0.3)]" 
               />
             </motion.div>
 
@@ -169,14 +164,11 @@ export default function HeroSection() {
                   }
                 }
               }}
-              className="absolute top-1/2 right-1/4"
+              className="absolute top-1/2 right-1/4 text-white/80"
             >
-              <Image
-                src="/images/science/atom-model.png"
-                alt="Atom Model"
-                width={180}
-                height={180}
-                className="rounded-lg shadow-lg"
+              <FontAwesomeIcon 
+                icon={faAtom} 
+                className="w-[180px] h-[180px] drop-shadow-[0_0_15px_rgba(59,130,246,0.3)]" 
               />
             </motion.div>
           </motion.div>
