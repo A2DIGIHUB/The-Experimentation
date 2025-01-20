@@ -2,13 +2,14 @@
 
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTwitter, faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons';
-import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { faTwitter, faGithub, faLinkedin, faInstagram, faYoutube } from '@fortawesome/free-brands-svg-icons';
+import { faArrowUp, faEnvelope, faPhone, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 
 export default function Footer() {
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [email, setEmail] = useState('');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,8 +24,43 @@ export default function Footer() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleNewsletterSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Implement newsletter subscription logic
+    console.log('Newsletter subscription:', email);
+    setEmail('');
+  };
+
   return (
     <footer className="bg-gradient-to-br from-blue-900 to-blue-800 text-white relative">
+      {/* Newsletter Section */}
+      <div className="bg-blue-950/30 py-12">
+        <div className="container mx-auto px-4">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="text-2xl font-bold mb-4">Subscribe to Our Newsletter</h2>
+            <p className="text-blue-200 mb-6">
+              Stay updated with our latest articles, research findings, and events.
+            </p>
+            <form onSubmit={handleNewsletterSubmit} className="flex gap-2 max-w-md mx-auto">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                className="flex-1 px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-white/50"
+                required
+              />
+              <button
+                type="submit"
+                className="px-6 py-2 bg-white text-blue-900 rounded-lg font-semibold hover:bg-blue-100 transition-colors"
+              >
+                Subscribe
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
       {/* Scroll to top button */}
       <motion.button
         initial={{ opacity: 0 }}
@@ -51,36 +87,25 @@ export default function Footer() {
               Making science accessible and engaging through interactive experiments and clear explanations.
             </p>
             <div className="flex space-x-4 pt-4">
-              <motion.a
-                href="https://twitter.com/TheExperimentation"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-200 hover:text-white transition-colors"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <FontAwesomeIcon icon={faTwitter} className="w-6 h-6" />
-              </motion.a>
-              <motion.a
-                href="https://github.com/A2DIGIHUB/The-Experimentation"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-200 hover:text-white transition-colors"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <FontAwesomeIcon icon={faGithub} className="w-6 h-6" />
-              </motion.a>
-              <motion.a
-                href="https://linkedin.com/company/the-experimentation"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-200 hover:text-white transition-colors"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <FontAwesomeIcon icon={faLinkedin} className="w-6 h-6" />
-              </motion.a>
+              {[
+                { icon: faTwitter, href: 'https://twitter.com/TheExperimentation' },
+                { icon: faGithub, href: 'https://github.com/A2DIGIHUB/The-Experimentation' },
+                { icon: faLinkedin, href: 'https://linkedin.com/company/the-experimentation' },
+                { icon: faInstagram, href: 'https://instagram.com/theexperimentation' },
+                { icon: faYoutube, href: 'https://youtube.com/theexperimentation' },
+              ].map((social, index) => (
+                <motion.a
+                  key={index}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-200 hover:text-white transition-colors"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <FontAwesomeIcon icon={social.icon} className="w-6 h-6" />
+                </motion.a>
+              ))}
             </div>
           </motion.div>
 
@@ -94,46 +119,29 @@ export default function Footer() {
           >
             <h3 className="text-xl font-bold">Quick Links</h3>
             <ul className="space-y-2">
-              <li>
-                <Link 
-                  href="/articles" 
-                  className="text-blue-200 hover:text-white transition-colors inline-block relative group"
-                >
-                  Articles
-                  <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  href="/experiments" 
-                  className="text-blue-200 hover:text-white transition-colors inline-block relative group"
-                >
-                  Experiments
-                  <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  href="/about" 
-                  className="text-blue-200 hover:text-white transition-colors inline-block relative group"
-                >
-                  About Us
-                  <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  href="/contact" 
-                  className="text-blue-200 hover:text-white transition-colors inline-block relative group"
-                >
-                  Contact
-                  <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
-                </Link>
-              </li>
+              {[
+                { name: 'Articles', href: '/articles' },
+                { name: 'About Us', href: '/about' },
+                { name: 'Contact', href: '/contact' },
+                { name: 'Privacy Policy', href: '/privacy' },
+                { name: 'Terms of Service', href: '/terms' },
+              ].map((link) => (
+                <li key={link.name}>
+                  <Link 
+                    href={link.href} 
+                    className="text-blue-200 hover:text-white transition-colors inline-block relative group"
+                  >
+                    <span className="relative">
+                      {link.name}
+                      <span className="absolute left-0 bottom-0 w-full h-0.5 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
+                    </span>
+                  </Link>
+                </li>
+              ))}
             </ul>
           </motion.div>
 
-          {/* Resources */}
+          {/* Categories */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -141,39 +149,32 @@ export default function Footer() {
             transition={{ delay: 0.2 }}
             className="space-y-4"
           >
-            <h3 className="text-xl font-bold">Resources</h3>
+            <h3 className="text-xl font-bold">Categories</h3>
             <ul className="space-y-2">
-              <li>
-                <Link 
-                  href="/blog" 
-                  className="text-blue-200 hover:text-white transition-colors inline-block relative group"
-                >
-                  Blog
-                  <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  href="/resources" 
-                  className="text-blue-200 hover:text-white transition-colors inline-block relative group"
-                >
-                  Resource Library
-                  <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  href="/faq" 
-                  className="text-blue-200 hover:text-white transition-colors inline-block relative group"
-                >
-                  FAQ
-                  <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
-                </Link>
-              </li>
+              {[
+                'Maternal Health',
+                'Healthcare',
+                'Medical Research',
+                'Community Health',
+                'Health Education',
+                'Clinical Trials',
+              ].map((category) => (
+                <li key={category}>
+                  <Link 
+                    href={`/category/${category.toLowerCase().replace(/\s+/g, '-')}`}
+                    className="text-blue-200 hover:text-white transition-colors inline-block relative group"
+                  >
+                    <span className="relative">
+                      {category}
+                      <span className="absolute left-0 bottom-0 w-full h-0.5 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
+                    </span>
+                  </Link>
+                </li>
+              ))}
             </ul>
           </motion.div>
 
-          {/* Newsletter */}
+          {/* Contact Info */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -181,36 +182,47 @@ export default function Footer() {
             transition={{ delay: 0.3 }}
             className="space-y-4"
           >
-            <h3 className="text-xl font-bold">Stay Updated</h3>
-            <p className="text-blue-200">Subscribe to our newsletter for the latest updates and insights.</p>
-            <form className="space-y-2">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="w-full px-4 py-2 rounded-lg bg-blue-800/50 border border-blue-700 text-white placeholder-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
-              >
-                Subscribe
-              </motion.button>
-            </form>
+            <h3 className="text-xl font-bold">Contact Us</h3>
+            <ul className="space-y-4">
+              <li className="flex items-center space-x-3 text-blue-200">
+                <FontAwesomeIcon icon={faMapMarkerAlt} className="w-5 h-5" />
+                <span>123 Research Avenue, Medical District, City</span>
+              </li>
+              <li className="flex items-center space-x-3 text-blue-200">
+                <FontAwesomeIcon icon={faPhone} className="w-5 h-5" />
+                <a href="tel:+1234567890" className="hover:text-white transition-colors">
+                  +1 (234) 567-890
+                </a>
+              </li>
+              <li className="flex items-center space-x-3 text-blue-200">
+                <FontAwesomeIcon icon={faEnvelope} className="w-5 h-5" />
+                <a href="mailto:info@theexperimentation.com" className="hover:text-white transition-colors">
+                  info@theexperimentation.com
+                </a>
+              </li>
+            </ul>
           </motion.div>
         </div>
 
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4 }}
-          className="mt-12 pt-8 border-t border-blue-800"
-        >
-          <div className="text-center text-blue-200">
-            <p>&copy; {new Date().getFullYear()} The-Experimentation. All rights reserved.</p>
+        {/* Bottom Bar */}
+        <div className="mt-12 pt-8 border-t border-blue-800">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <p className="text-blue-200 text-sm">
+              &copy; {new Date().getFullYear()} The-Experimentation. All rights reserved.
+            </p>
+            <div className="flex space-x-6 text-sm">
+              <Link href="/privacy" className="text-blue-200 hover:text-white transition-colors">
+                Privacy Policy
+              </Link>
+              <Link href="/terms" className="text-blue-200 hover:text-white transition-colors">
+                Terms of Service
+              </Link>
+              <Link href="/sitemap" className="text-blue-200 hover:text-white transition-colors">
+                Sitemap
+              </Link>
+            </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </footer>
   );

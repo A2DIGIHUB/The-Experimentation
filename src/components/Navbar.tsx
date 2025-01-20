@@ -3,7 +3,16 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faTimes, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { 
+  faBars, 
+  faTimes, 
+  faSearch, 
+  faBell,
+  faUser,
+  faBookmark,
+  faCog,
+  faSignOut
+} from '@fortawesome/free-solid-svg-icons';
 import { motion, AnimatePresence } from 'framer-motion';
 import SearchBar from './SearchBar';
 
@@ -11,6 +20,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,6 +47,14 @@ export default function Navbar() {
     setIsSearchOpen(false);
   };
 
+  const navItems = [
+    { name: 'Home', href: '/' },
+    { name: 'Articles', href: '/articles' },
+    { name: 'Sickle Cell', href: '/sickle-cell' },
+    { name: 'Resources', href: '/resources' },
+    { name: 'Events', href: '/events' },
+  ];
+
   return (
     <>
       <nav 
@@ -49,139 +67,135 @@ export default function Navbar() {
             {/* Logo */}
             <Link 
               href="/" 
-              className="text-blue-900 font-bold text-xl flex items-center space-x-2 hover:text-blue-700 transition-colors"
+              className="text-xl font-bold text-primary-blue flex items-center"
             >
-              <span className="hidden sm:inline">The-Experimentation</span>
-              <span className="sm:hidden">T-E</span>
+              The-Experimentation
             </Link>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
-              <div className="flex items-center space-x-6">
-                <Link 
-                  href="/articles" 
-                  className="text-gray-600 hover:text-blue-900 transition-colors relative group py-2"
+              {navItems.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="text-gray-600 hover:text-primary-blue transition-colors"
                 >
-                  Articles
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-900 transition-all duration-300 group-hover:w-full"></span>
+                  {item.name}
                 </Link>
-                <Link 
-                  href="/experiments" 
-                  className="text-gray-600 hover:text-blue-900 transition-colors relative group py-2"
-                >
-                  Experiments
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-900 transition-all duration-300 group-hover:w-full"></span>
-                </Link>
-                <Link 
-                  href="/about" 
-                  className="text-gray-600 hover:text-blue-900 transition-colors relative group py-2"
-                >
-                  About
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-900 transition-all duration-300 group-hover:w-full"></span>
-                </Link>
-                <Link 
-                  href="/contact" 
-                  className="text-gray-600 hover:text-blue-900 transition-colors relative group py-2"
-                >
-                  Contact
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-900 transition-all duration-300 group-hover:w-full"></span>
-                </Link>
-              </div>
+              ))}
+            </div>
+
+            {/* Desktop Right Section */}
+            <div className="hidden md:flex items-center space-x-6">
+              {/* Search Button */}
               <button
                 onClick={() => setIsSearchOpen(true)}
-                className="text-gray-600 hover:text-blue-900 focus:outline-none p-2 rounded-full hover:bg-gray-100 transition-colors"
-                aria-label="Toggle search"
+                className="text-gray-600 hover:text-primary-blue transition-colors"
+                aria-label="Search"
               >
-                <FontAwesomeIcon icon={faSearch} className="h-5 w-5" />
+                <FontAwesomeIcon icon={faSearch} className="w-5 h-5" />
               </button>
+
+              {/* Notifications */}
+              <div className="relative">
+                <button className="text-gray-600 hover:text-primary-blue transition-colors">
+                  <FontAwesomeIcon icon={faBell} className="w-5 h-5" />
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                    2
+                  </span>
+                </button>
+              </div>
+
+              {/* User Menu */}
+              <div className="relative">
+                <button 
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                  className="text-gray-600 hover:text-primary-blue transition-colors"
+                >
+                  <FontAwesomeIcon icon={faUser} className="w-5 h-5" />
+                </button>
+
+                <AnimatePresence>
+                  {showUserMenu && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2"
+                    >
+                      <Link href="/profile" className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                        <FontAwesomeIcon icon={faUser} className="w-4 h-4 mr-2" />
+                        Profile
+                      </Link>
+                      <Link href="/bookmarks" className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                        <FontAwesomeIcon icon={faBookmark} className="w-4 h-4 mr-2" />
+                        Bookmarks
+                      </Link>
+                      <Link href="/settings" className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                        <FontAwesomeIcon icon={faCog} className="w-4 h-4 mr-2" />
+                        Settings
+                      </Link>
+                      <hr className="my-2" />
+                      <button className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100">
+                        <FontAwesomeIcon icon={faSignOut} className="w-4 h-4 mr-2" />
+                        Sign Out
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
 
             {/* Mobile menu button */}
             <div className="md:hidden flex items-center space-x-4">
               <button
                 onClick={() => setIsSearchOpen(true)}
-                className="text-gray-600 hover:text-blue-900 focus:outline-none p-2"
-                aria-label="Toggle search"
+                className="text-gray-600 hover:text-gray-900"
+                aria-label="Search"
               >
-                <FontAwesomeIcon icon={faSearch} className="h-5 w-5" />
+                <FontAwesomeIcon icon={faSearch} className="w-5 h-5" />
               </button>
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="text-gray-600 hover:text-blue-900 focus:outline-none p-2"
+                className="text-gray-600 hover:text-gray-900"
                 aria-label="Toggle menu"
               >
-                <FontAwesomeIcon icon={isOpen ? faTimes : faBars} className="h-5 w-5" />
+                <FontAwesomeIcon icon={isOpen ? faTimes : faBars} className="w-6 h-6" />
               </button>
             </div>
           </div>
-
-          {/* Mobile menu */}
-          <AnimatePresence>
-            {isOpen && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                className="md:hidden overflow-hidden bg-white"
-              >
-                <div className="py-4 space-y-4">
-                  <Link
-                    href="/articles"
-                    className="block px-4 py-2 text-gray-600 hover:text-blue-900 hover:bg-gray-50 transition-colors"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Articles
-                  </Link>
-                  <Link
-                    href="/experiments"
-                    className="block px-4 py-2 text-gray-600 hover:text-blue-900 hover:bg-gray-50 transition-colors"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Experiments
-                  </Link>
-                  <Link
-                    href="/about"
-                    className="block px-4 py-2 text-gray-600 hover:text-blue-900 hover:bg-gray-50 transition-colors"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    About
-                  </Link>
-                  <Link
-                    href="/contact"
-                    className="block px-4 py-2 text-gray-600 hover:text-blue-900 hover:bg-gray-50 transition-colors"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Contact
-                  </Link>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
         </div>
-      </nav>
 
-      {/* Search overlay */}
-      <AnimatePresence>
-        {isSearchOpen && (
-          <>
+        {/* Mobile Navigation */}
+        <AnimatePresence>
+          {isOpen && (
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
-              onClick={() => setIsSearchOpen(false)}
-            />
-            <motion.div
-              initial={{ opacity: 0, y: -50 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -50 }}
-              className="fixed top-20 left-1/2 -translate-x-1/2 w-full max-w-2xl mx-auto px-4 z-50"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden bg-white border-t border-gray-200"
             >
-              <div className="bg-white rounded-lg shadow-xl p-4">
-                <SearchBar onSearch={handleSearchComplete} />
+              <div className="px-4 py-2 space-y-1">
+                {navItems.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className="block px-3 py-2 text-gray-600 hover:text-primary-blue hover:bg-gray-50 rounded-md"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
               </div>
             </motion.div>
-          </>
+          )}
+        </AnimatePresence>
+      </nav>
+
+      {/* Search Overlay */}
+      <AnimatePresence>
+        {isSearchOpen && (
+          <SearchBar onClose={() => setIsSearchOpen(false)} onComplete={handleSearchComplete} />
         )}
       </AnimatePresence>
     </>

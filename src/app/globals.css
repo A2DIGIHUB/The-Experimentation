@@ -1,9 +1,192 @@
-/* Tailwind Base */
-@import '../styles/variables.css';
-@import '../styles/base.css';
-@import '../styles/components.css';
-@import '../styles/utilities.css';
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .article-page {
+    @apply min-h-screen bg-white;
+  }
+
+  .article-container {
+    @apply max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative;
+  }
+
+  .article-sidebar {
+    @apply sticky top-4 float-right ml-8 mb-8 w-48 bg-white rounded-lg shadow-sm border border-gray-100;
+  }
+
+  .article-actions {
+    @apply p-4 flex flex-col gap-3;
+  }
+
+  .article-action-button {
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors text-sm w-full justify-center;
+  }
+
+  .article-content {
+    @apply text-lg text-gray-800 leading-relaxed;
+  }
+
+  .article-content h2 {
+    @apply text-2xl font-bold text-gray-900 mt-12 mb-6 bg-gray-50 px-4 py-2 rounded-lg;
+  }
+
+  .article-content h3 {
+    @apply text-xl font-bold text-gray-900 mt-8 mb-4;
+  }
+
+  .article-content p {
+    @apply mb-6 leading-relaxed;
+  }
+
+  .article-content ul {
+    @apply space-y-3 my-6;
+  }
+
+  .article-content ol {
+    @apply space-y-3 my-6 list-decimal pl-6;
+  }
+
+  .article-content li {
+    @apply pl-6 relative;
+  }
+
+  .article-content ul > li::before {
+    content: "";
+    @apply absolute left-0 top-[0.6em] w-2 h-2 bg-blue-500 rounded-full;
+  }
+
+  .article-content ol > li {
+    @apply pl-2;
+  }
+
+  .article-content ol > li::marker {
+    @apply text-blue-500 font-bold;
+  }
+
+  .article-content strong {
+    @apply text-blue-600 font-semibold;
+  }
+
+  .article-content em {
+    @apply text-gray-700 italic;
+  }
+
+  .article-content a {
+    @apply text-blue-600 hover:text-blue-800 underline;
+  }
+
+  .article-content blockquote {
+    @apply border-l-4 border-blue-500 pl-6 py-4 my-8 bg-blue-50 rounded-r-lg italic;
+  }
+
+  .article-content code {
+    @apply bg-gray-50 px-2 py-1 rounded font-mono text-sm text-gray-800;
+  }
+
+  .article-content pre {
+    @apply bg-gray-50 text-gray-800 p-4 rounded-lg overflow-x-auto my-6 border border-gray-200;
+  }
+
+  .article-content pre code {
+    @apply bg-transparent p-0 text-inherit;
+  }
+
+  .article-header {
+    @apply relative h-[60vh] min-h-[400px] bg-gradient-to-br from-blue-50 to-white;
+  }
+
+  .article-header-image {
+    @apply absolute inset-0 w-full h-full object-cover opacity-90;
+  }
+
+  .article-header-overlay {
+    @apply absolute inset-0 bg-gradient-to-t from-white/90 via-white/50 to-transparent;
+  }
+
+  .article-meta {
+    @apply flex items-center gap-4 text-sm text-gray-600 flex-wrap;
+  }
+
+  .article-meta-item {
+    @apply flex items-center gap-2;
+  }
+
+  .article-nav {
+    @apply flex justify-between items-center mt-8;
+  }
+
+  .article-nav-link {
+    @apply inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors;
+  }
+
+  .article-footer {
+    @apply mt-12 pt-8 border-t border-gray-100;
+  }
+
+  .article-tags {
+    @apply mb-8;
+  }
+
+  .share-button {
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors;
+  }
+
+  .table-of-contents {
+    @apply bg-gray-50 p-4 rounded-lg mb-8;
+  }
+
+  .table-of-contents-title {
+    @apply text-lg font-bold text-gray-900 mb-4;
+  }
+
+  .table-of-contents-list {
+    @apply space-y-2;
+  }
+
+  .table-of-contents-item {
+    @apply text-gray-600 hover:text-gray-900 transition-colors cursor-pointer;
+  }
+
+  .article-progress {
+    @apply fixed top-0 left-0 w-full h-1 bg-gray-200 z-50;
+  }
+
+  .article-progress-bar {
+    @apply h-full bg-blue-600 transition-all duration-200;
+  }
+
+  /* Navigation */
+  .nav-link {
+    @apply text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium;
+  }
+
+  .nav-link-active {
+    @apply text-blue-600;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply bg-blue-600 text-white hover:bg-blue-700;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-50 text-gray-700 hover:bg-gray-100;
+  }
+
+  /* Animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .fade-in {
+    animation: fadeIn 0.5s ease-out;
+  }
+}
