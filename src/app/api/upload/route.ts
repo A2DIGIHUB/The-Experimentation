@@ -1,12 +1,10 @@
 import { NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
+import { put } from '@vercel/blob';
 import crypto from 'crypto';
 
 // Configuration
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];
-const UPLOAD_DIR = join(process.cwd(), 'public', 'uploads');
 
 // Utility to generate safe filename
 const generateSafeFileName = (originalName: string): string => {
@@ -62,7 +60,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // Read file buffer
+    // Read file buffer for virus scan
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
@@ -77,23 +75,22 @@ export async function POST(request: Request) {
 
     // Generate safe filename
     const fileName = generateSafeFileName(file.name);
-    const filePath = join(UPLOAD_DIR, fileName);
 
-    // Create uploads directory if it doesn't exist
-    await mkdir(UPLOAD_DIR, { recursive: true });
-
-    // Save file
-    await writeFile(filePath, new Uint8Array(bytes));
+    // Upload to Vercel Blob Storage
+    const blob = await put(fileName, file, {
+      access: 'public',
+      addRandomSuffix: true,
+    });
 
     // Return success with file details
     return NextResponse.json({
       message: 'File uploaded successfully',
-      fileName,
-      url: `/uploads/${fileName}`,
+      fileName: blob.pathname,
+      url: blob.url,
     }, { headers });
 
   } catch (error) {
-    console.error('Upload error:', error);
+    console.error('Upload error:', error instanceof Error ? error.message : String(error));
     return NextResponse.json(
       { error: 'Failed to upload file' },
       { status: 500 }

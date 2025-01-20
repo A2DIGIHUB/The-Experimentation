@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "next dev -p 3002",
-    "build": "next build",
+    "build": "next build --exclude='**/*.test.{js,jsx,ts,tsx}'",
     "start": "next start -p 3002",
     "lint": "next lint",
     "test": "jest",
@@ -22,6 +22,7 @@
     "@types/node": "20.11.5",
     "@types/react": "18.2.48",
     "@types/react-dom": "18.2.18",
+    "@vercel/blob": "^0.27.1",
     "autoprefixer": "10.4.17",
     "date-fns": "^3.2.0",
     "framer-motion": "^10.18.0",
