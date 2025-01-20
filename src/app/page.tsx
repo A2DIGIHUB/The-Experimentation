@@ -4,32 +4,13 @@ import NewsletterSignup from '@/components/NewsletterSignup';
 import ScienceHighlight from '@/components/ScienceHighlight';
 import ExperimentShowcase from '@/components/ExperimentShowcase';
 import ScienceStats from '@/components/ScienceStats';
+import HeroSection from '@/components/HeroSection';
 
 export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              The-Experimentation
-            </h1>
-            <p className="text-2xl mb-4">Where Science Comes to Life</p>
-            <p className="text-xl mb-8">
-              Discover the wonders of science through interactive experiments, engaging articles, and expert explanations.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link href="/articles" className="btn-primary bg-white text-blue-600 hover:bg-gray-100">
-                Explore Articles
-              </Link>
-              <Link href="/resources" className="btn-primary border-2 border-white hover:bg-white hover:text-blue-600">
-                Start Experimenting
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroSection />
 
       {/* Science Highlights */}
       <section className="py-16 bg-gray-50">
