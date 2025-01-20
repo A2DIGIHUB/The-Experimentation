@@ -1,31 +1,15 @@
 import './globals.css';
-import { Inter, Montserrat } from 'next/font/google';
-import Navigation from '@/components/Navigation';
+import { Inter } from 'next/font/google';
+import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import type { Viewport } from 'next';
 
 const inter = Inter({
   subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-inter',
-  fallback: ['system-ui', 'arial'],
 });
-
-const montserrat = Montserrat({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-montserrat',
-  fallback: ['georgia', 'times new roman'],
-});
-
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-};
 
 export const metadata = {
-  title: 'African and Pregnant | Health & Wellness Blog',
-  description: 'Your trusted source for pregnancy and health information, tailored for African women.',
+  title: 'The-Experimentation - Science Communication Platform',
+  description: 'Discover the wonders of science through interactive experiments, engaging articles, and expert explanations.',
 };
 
 export default function RootLayout({
@@ -34,10 +18,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${montserrat.variable}`}>
-      <body className="min-h-screen bg-white font-sans antialiased flex flex-col">
-        <Navigation />
-        <main className="flex-grow">{children}</main>
+    <html lang="en">
+      <body className={inter.className}>
+        <Navbar />
+        <main className="pt-16">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>

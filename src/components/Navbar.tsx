@@ -21,12 +21,12 @@ export default function Navbar() {
 
   return (
     <nav className={`fixed w-full z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-blue-900/95 backdrop-blur-sm shadow-lg' : 'bg-transparent'
-    }`}>
+      isScrolled ? 'shadow-lg' : ''
+    } bg-white border-b border-gray-200`}>
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="text-white font-bold text-xl">
+          <Link href="/" className="text-blue-900 font-bold text-xl">
             The-Experimentation
           </Link>
 
@@ -34,64 +34,64 @@ export default function Navbar() {
           <div className="hidden md:flex items-center space-x-8">
             <SearchBar />
             <div className="flex items-center space-x-6">
-              <Link href="/articles" className="text-white/80 hover:text-white transition-colors">
+              <Link href="/articles" className="text-gray-600 hover:text-blue-900 transition-colors">
                 Articles
               </Link>
-              <Link href="/experiments" className="text-white/80 hover:text-white transition-colors">
+              <Link href="/experiments" className="text-gray-600 hover:text-blue-900 transition-colors">
                 Experiments
               </Link>
-              <Link href="/about" className="text-white/80 hover:text-white transition-colors">
+              <Link href="/about" className="text-gray-600 hover:text-blue-900 transition-colors">
                 About
               </Link>
-              <Link href="/contact" className="text-white/80 hover:text-white transition-colors">
+              <Link href="/contact" className="text-gray-600 hover:text-blue-900 transition-colors">
                 Contact
               </Link>
             </div>
           </div>
 
           {/* Mobile menu button */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-white focus:outline-none"
-          >
-            <FontAwesomeIcon icon={isOpen ? faTimes : faBars} className="w-6 h-6" />
-          </button>
+          <div className="md:hidden">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-gray-600 hover:text-blue-900 focus:outline-none"
+            >
+              <FontAwesomeIcon icon={isOpen ? faTimes : faBars} className="h-6 w-6" />
+            </button>
+          </div>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Mobile menu */}
         <div
-          className={`md:hidden transition-all duration-300 overflow-hidden ${
-            isOpen ? 'max-h-96 pb-4' : 'max-h-0'
-          }`}
+          className={`${
+            isOpen ? 'block' : 'hidden'
+          } md:hidden bg-white py-4`}
         >
-          <div className="flex flex-col space-y-4">
-            <div className="py-4">
-              <SearchBar />
-            </div>
+          <SearchBar />
+          <div className="flex flex-col space-y-4 mt-4">
             <Link
               href="/articles"
-              className="text-white/80 hover:text-white transition-colors"
+              className="text-gray-600 hover:text-blue-900 transition-colors"
               onClick={() => setIsOpen(false)}
             >
               Articles
             </Link>
             <Link
               href="/experiments"
-              className="text-white/80 hover:text-white transition-colors"
+              className="text-gray-600 hover:text-blue-900 transition-colors"
               onClick={() => setIsOpen(false)}
             >
               Experiments
             </Link>
             <Link
               href="/about"
-              className="text-white/80 hover:text-white transition-colors"
+              className="text-gray-600 hover:text-blue-900 transition-colors"
               onClick={() => setIsOpen(false)}
             >
               About
             </Link>
             <Link
               href="/contact"
-              className="text-white/80 hover:text-white transition-colors"
+              className="text-gray-600 hover:text-blue-900 transition-colors"
               onClick={() => setIsOpen(false)}
             >
               Contact

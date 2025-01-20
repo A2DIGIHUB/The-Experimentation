@@ -39,11 +39,11 @@ export default function SearchBar() {
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           placeholder="Search articles..."
-          className="w-full bg-white/10 text-white placeholder-white/60 rounded-full py-2 pl-4 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-white/20 transition-all"
+          className="w-full bg-gray-50 text-gray-900 placeholder-gray-500 border border-gray-200 rounded-lg py-2 pl-4 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
         />
         <button
           type="submit"
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white focus:outline-none transition-colors"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-900 focus:outline-none transition-colors"
           disabled={isSearching}
         >
           <FontAwesomeIcon 
