@@ -3,6 +3,7 @@ import { Publication } from '@/data/publications';
 import { convert, HtmlToTextOptions } from 'html-to-text';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
+import React from 'react';
 
 const styles = StyleSheet.create({
   page: {
@@ -71,11 +72,16 @@ const ArticlePDF: React.FC<ArticlePDFProps> = ({ article, children }) => {
       document={<ArticlePDFDocument article={article} />}
       fileName={`${article.title.toLowerCase().replace(/\s+/g, '-')}.pdf`}
     >
-      {({ loading }) => (
+      {({ blob, url, loading, error }) => 
         loading ? (
-          <button className="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-400 cursor-wait">
+          <button disabled className="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-400 cursor-wait">
             <FontAwesomeIcon icon={faDownload} className="animate-pulse" />
             <span>Preparing PDF...</span>
+          </button>
+        ) : error ? (
+          <button disabled className="inline-flex items-center gap-2 px-4 py-2 text-sm text-red-600">
+            <FontAwesomeIcon icon={faDownload} />
+            <span>Error generating PDF</span>
           </button>
         ) : children || (
           <button className="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:text-blue-600 transition-colors">
@@ -83,7 +89,7 @@ const ArticlePDF: React.FC<ArticlePDFProps> = ({ article, children }) => {
             <span>Download PDF</span>
           </button>
         )
-      )}
+      }
     </PDFDownloadLink>
   );
 };
