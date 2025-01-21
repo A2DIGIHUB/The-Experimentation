@@ -1,6 +1,8 @@
 import { Document, Page, Text, View, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
 import { Publication } from '@/data/publications';
 import { convert, HtmlToTextOptions } from 'html-to-text';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
 
 const styles = StyleSheet.create({
   page: {
@@ -73,7 +75,12 @@ const ArticlePDF: React.FC<ArticlePDFProps> = ({ article }) => {
       fileName={`${article.title.toLowerCase().replace(/\s+/g, '-')}.pdf`}
       className="article-action-button"
     >
-      {({ loading }) => (loading ? 'Preparing PDF...' : 'Download PDF')}
+      {({ loading, error }) => (
+        <div className="flex items-center gap-2">
+          <FontAwesomeIcon icon={faDownload} />
+          <span>{loading ? 'Preparing PDF...' : error ? 'Error' : 'Download PDF'}</span>
+        </div>
+      )}
     </PDFDownloadLink>
   );
 };
