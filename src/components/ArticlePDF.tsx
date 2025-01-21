@@ -1,4 +1,4 @@
-import { Document, Page, Text, View, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, PDFDownloadLink, PDFDownloadLinkProps } from '@react-pdf/renderer';
 import { Publication } from '@/data/publications';
 import { convert, HtmlToTextOptions } from 'html-to-text';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -66,30 +66,47 @@ const ArticlePDFDocument: React.FC<ArticlePDFProps> = ({ article }) => {
   );
 };
 
+interface RenderProps {
+  blob: Blob | null;
+  url: string | null;
+  loading: boolean;
+  error: Error | null;
+}
+
 const ArticlePDF: React.FC<ArticlePDFProps> = ({ article, children }) => {
+  const renderContent = React.useCallback(({ loading, error }: RenderProps) => {
+    if (loading) {
+      return (
+        <button disabled className="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-400 cursor-wait">
+          <FontAwesomeIcon icon={faDownload} className="animate-pulse" />
+          <span>Preparing PDF...</span>
+        </button>
+      );
+    }
+
+    if (error) {
+      return (
+        <button disabled className="inline-flex items-center gap-2 px-4 py-2 text-sm text-red-600">
+          <FontAwesomeIcon icon={faDownload} />
+          <span>Error generating PDF</span>
+        </button>
+      );
+    }
+
+    return children || (
+      <button className="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:text-blue-600 transition-colors">
+        <FontAwesomeIcon icon={faDownload} />
+        <span>Download PDF</span>
+      </button>
+    );
+  }, [children]);
+
   return (
     <PDFDownloadLink
       document={<ArticlePDFDocument article={article} />}
       fileName={`${article.title.toLowerCase().replace(/\s+/g, '-')}.pdf`}
     >
-      {({ blob, url, loading, error }) => 
-        loading ? (
-          <button disabled className="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-400 cursor-wait">
-            <FontAwesomeIcon icon={faDownload} className="animate-pulse" />
-            <span>Preparing PDF...</span>
-          </button>
-        ) : error ? (
-          <button disabled className="inline-flex items-center gap-2 px-4 py-2 text-sm text-red-600">
-            <FontAwesomeIcon icon={faDownload} />
-            <span>Error generating PDF</span>
-          </button>
-        ) : children || (
-          <button className="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:text-blue-600 transition-colors">
-            <FontAwesomeIcon icon={faDownload} />
-            <span>Download PDF</span>
-          </button>
-        )
-      }
+      {renderContent}
     </PDFDownloadLink>
   );
 };
