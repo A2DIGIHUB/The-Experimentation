@@ -1,80 +1,81 @@
-import { Document, Page, Text, View, StyleSheet, PDFDownloadLink, Font } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
 import { Publication } from '@/data/publications';
-import { convert } from 'html-to-text';
-
-Font.register({
-  family: 'Inter',
-  src: 'https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2',
-});
+import { convert, HtmlToTextOptions } from 'html-to-text';
 
 const styles = StyleSheet.create({
   page: {
     flexDirection: 'column',
     backgroundColor: '#fff',
     padding: 40,
-    fontFamily: 'Inter',
   },
   header: {
-    marginBottom: 30,
+    marginBottom: 20,
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
     marginBottom: 10,
   },
-  meta: {
+  metadata: {
     fontSize: 12,
     color: '#666',
     marginBottom: 5,
   },
   content: {
     fontSize: 12,
-    lineHeight: 1.6,
+    lineHeight: 1.5,
+    textAlign: 'justify',
   },
   section: {
-    marginBottom: 20,
+    margin: 10,
+    padding: 10,
   },
 });
 
-const ArticlePDF = ({ article }: { article: Publication }) => {
-  const plainContent = convert(article.content, {
-    wordwrap: 130,
-    preserveNewlines: true,
-  });
+const htmlToTextOptions: HtmlToTextOptions = {
+  wordwrap: 130,
+  selectors: [
+    { selector: 'img', format: 'skip' },
+    { selector: 'a', options: { ignoreHref: true } },
+  ],
+};
+
+interface ArticlePDFProps {
+  article: Publication;
+}
+
+const ArticlePDFDocument: React.FC<ArticlePDFProps> = ({ article }) => {
+  const plainTextContent = convert(article.content, htmlToTextOptions);
 
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
           <Text style={styles.title}>{article.title}</Text>
-          <Text style={styles.meta}>By {article.author}</Text>
-          <Text style={styles.meta}>
-            {new Date(article.date).toLocaleDateString('en-US', {
-              month: 'long',
-              day: 'numeric',
-              year: 'numeric',
-            })}
-          </Text>
+          <Text style={styles.metadata}>Author: {article.author}</Text>
+          <Text style={styles.metadata}>Date: {new Date(article.date).toLocaleDateString()}</Text>
+          <Text style={styles.metadata}>Category: {article.category}</Text>
         </View>
         <View style={styles.section}>
           <Text style={styles.content}>{article.excerpt}</Text>
         </View>
         <View style={styles.section}>
-          <Text style={styles.content}>{plainContent}</Text>
+          <Text style={styles.content}>{plainTextContent}</Text>
         </View>
       </Page>
     </Document>
   );
 };
 
-export const ArticlePDFLink = ({ article }: { article: Publication }) => (
-  <PDFDownloadLink
-    document={<ArticlePDF article={article} />}
-    fileName={`${article.title.toLowerCase().replace(/\s+/g, '-')}.pdf`}
-    className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-  >
-    {({ loading }) => (loading ? 'Preparing PDF...' : 'Download PDF')}
-  </PDFDownloadLink>
-);
+const ArticlePDF: React.FC<ArticlePDFProps> = ({ article }) => {
+  return (
+    <PDFDownloadLink 
+      document={<ArticlePDFDocument article={article} />}
+      fileName={`${article.title.toLowerCase().replace(/\s+/g, '-')}.pdf`}
+      className="article-action-button"
+    >
+      {({ loading }) => (loading ? 'Preparing PDF...' : 'Download PDF')}
+    </PDFDownloadLink>
+  );
+};
 
 export default ArticlePDF;
