@@ -1,9 +1,11 @@
-import { Document, Page, Text, View, StyleSheet, PDFDownloadLink, PDFDownloadLinkProps } from '@react-pdf/renderer';
+'use client';
+
+import { Document, Page, Text, View, StyleSheet, usePDF } from '@react-pdf/renderer';
 import { Publication } from '@/data/publications';
 import { convert, HtmlToTextOptions } from 'html-to-text';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const styles = StyleSheet.create({
   page: {
@@ -55,8 +57,12 @@ const ArticlePDFDocument: React.FC<ArticlePDFProps> = ({ article }) => {
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
           <Text style={styles.title}>{article.title}</Text>
-          <Text style={styles.metadata}>Author: {article.author}</Text>
-          <Text style={styles.metadata}>Date: {new Date(article.date).toLocaleDateString()}</Text>
+          <Text style={styles.metadata}>
+            Author: {article.author}
+          </Text>
+          <Text style={styles.metadata}>
+            Date: {new Date(article.date).toLocaleDateString()}
+          </Text>
         </View>
         <View style={styles.content}>
           <Text>{plainTextContent}</Text>
@@ -66,46 +72,59 @@ const ArticlePDFDocument: React.FC<ArticlePDFProps> = ({ article }) => {
   );
 };
 
-interface RenderProps {
-  blob: Blob | null;
-  url: string | null;
-  loading: boolean;
-  error: Error | null;
-}
-
 const ArticlePDF: React.FC<ArticlePDFProps> = ({ article, children }) => {
-  return (
-    <PDFDownloadLink
-      document={<ArticlePDFDocument article={article} />}
-      fileName={`${article.title.toLowerCase().replace(/\s+/g, '-')}.pdf`}
+  const [instance, updateInstance] = usePDF({ document: <ArticlePDFDocument article={article} /> });
+
+  // Handle SSR
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      updateInstance();
+    }
+  }, [article, updateInstance]);
+
+  // Initial SSR state
+  if (typeof window === 'undefined') {
+    return (
+      <button disabled className="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-400">
+        <FontAwesomeIcon icon={faDownload} />
+        <span>Loading PDF...</span>
+      </button>
+    );
+  }
+
+  if (instance.loading) {
+    return (
+      <button disabled className="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-400 cursor-wait">
+        <FontAwesomeIcon icon={faDownload} className="animate-pulse" />
+        <span>Preparing PDF...</span>
+      </button>
+    );
+  }
+
+  if (instance.error) {
+    console.error('PDF generation error:', instance.error);
+    return (
+      <button disabled className="inline-flex items-center gap-2 px-4 py-2 text-sm text-red-600">
+        <FontAwesomeIcon icon={faDownload} />
+        <span>Error generating PDF</span>
+      </button>
+    );
+  }
+
+  if (!instance.url) {
+    return null;
+  }
+
+  return children || (
+    <a
+      href={instance.url}
+      download={`${article.title.toLowerCase().replace(/\s+/g, '-')}.pdf`}
+      className="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:text-blue-600 transition-colors"
+      rel="noopener noreferrer"
     >
-      {({ blob, url, loading, error }: RenderProps) => {
-        if (loading) {
-          return (
-            <button disabled className="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-400 cursor-wait">
-              <FontAwesomeIcon icon={faDownload} className="animate-pulse" />
-              <span>Preparing PDF...</span>
-            </button>
-          );
-        }
-
-        if (error) {
-          return (
-            <button disabled className="inline-flex items-center gap-2 px-4 py-2 text-sm text-red-600">
-              <FontAwesomeIcon icon={faDownload} />
-              <span>Error generating PDF</span>
-            </button>
-          );
-        }
-
-        return children || (
-          <button className="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:text-blue-600 transition-colors">
-            <FontAwesomeIcon icon={faDownload} />
-            <span>Download PDF</span>
-          </button>
-        );
-      }}
-    </PDFDownloadLink>
+      <FontAwesomeIcon icon={faDownload} />
+      <span>Download PDF</span>
+    </a>
   );
 };
 

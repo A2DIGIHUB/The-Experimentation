@@ -6,13 +6,15 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt, faUser, faClock, faShare, faArrowLeft, faDownload, faBookmark } from '@fortawesome/free-solid-svg-icons';
-import { publications } from '@/data/publications';
+import { publications, Publication } from '@/data/publications';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import ArticlePDF from '@/components/ArticlePDF';
+import { useRouter } from 'next/navigation';
 
 export default function ArticlePage({ params }: { params: { id: string } }) {
-  const [article, setArticle] = useState<any>(null);
+  const router = useRouter();
+  const [article, setArticle] = useState<Publication | null>(null);
   const [readingTime, setReadingTime] = useState(0);
   const [isBookmarked, setIsBookmarked] = useState(false);
 
@@ -25,22 +27,18 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
       // Calculate reading time (assuming 200 words per minute)
       const wordCount = currentArticle.content.split(' ').length;
       setReadingTime(Math.ceil(wordCount / 200));
+    } else {
+      // Redirect to articles page if article not found
+      router.push('/articles');
     }
-  }, [params.id]);
+  }, [params.id, router]);
 
   if (!article) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">Article not found</h1>
-          <p className="text-gray-600 mb-6">The article you're looking for doesn't exist.</p>
-          <Link 
-            href="/articles" 
-            className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            <FontAwesomeIcon icon={faArrowLeft} />
-            <span>Back to Articles</span>
-          </Link>
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">Loading article...</h1>
+          <p className="text-gray-600 mb-6">Please wait while we fetch the article.</p>
         </div>
       </div>
     );
@@ -158,12 +156,7 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
             <FontAwesomeIcon icon={faShare} />
             <span className="hidden sm:inline">Share</span>
           </button>
-          <ArticlePDF article={article}>
-            <button className="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:text-blue-600 transition-colors">
-              <FontAwesomeIcon icon={faDownload} />
-              <span className="hidden sm:inline">Download PDF</span>
-            </button>
-          </ArticlePDF>
+          <ArticlePDF article={article} />
         </div>
 
         {/* Article Body */}
