@@ -62,23 +62,23 @@ export default function Navbar() {
           isScrolled ? 'shadow-lg bg-white/95 backdrop-blur-sm' : 'bg-white'
         } border-b border-gray-200`}
       >
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16 sm:h-20">
             {/* Logo */}
             <Link 
               href="/" 
-              className="text-xl font-bold text-primary-blue flex items-center"
+              className="text-lg sm:text-xl font-bold text-primary-blue flex items-center"
             >
               The-Experimentation
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8">
+            <div className="hidden md:flex items-center space-x-1 lg:space-x-8">
               {navItems.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="text-gray-600 hover:text-primary-blue transition-colors"
+                  className="px-3 py-2 text-sm lg:text-base text-gray-600 hover:text-primary-blue transition-colors rounded-md hover:bg-blue-50"
                 >
                   {item.name}
                 </Link>
@@ -86,11 +86,11 @@ export default function Navbar() {
             </div>
 
             {/* Desktop Right Section */}
-            <div className="hidden md:flex items-center space-x-6">
+            <div className="hidden md:flex items-center space-x-4 lg:space-x-6">
               {/* Search Button */}
               <button
                 onClick={() => setIsSearchOpen(true)}
-                className="text-gray-600 hover:text-primary-blue transition-colors"
+                className="text-gray-600 hover:text-primary-blue transition-colors p-2 hover:bg-blue-50 rounded-full"
                 aria-label="Search"
               >
                 <FontAwesomeIcon icon={faSearch} className="w-5 h-5" />
@@ -98,7 +98,7 @@ export default function Navbar() {
 
               {/* Notifications */}
               <div className="relative">
-                <button className="text-gray-600 hover:text-primary-blue transition-colors">
+                <button className="text-gray-600 hover:text-primary-blue transition-colors p-2 hover:bg-blue-50 rounded-full">
                   <FontAwesomeIcon icon={faBell} className="w-5 h-5" />
                   <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
                     2
@@ -110,7 +110,7 @@ export default function Navbar() {
               <div className="relative">
                 <button 
                   onClick={() => setShowUserMenu(!showUserMenu)}
-                  className="text-gray-600 hover:text-primary-blue transition-colors"
+                  className="text-gray-600 hover:text-primary-blue transition-colors p-2 hover:bg-blue-50 rounded-full"
                 >
                   <FontAwesomeIcon icon={faUser} className="w-5 h-5" />
                 </button>
@@ -121,23 +121,23 @@ export default function Navbar() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2"
+                      className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg py-2 border border-gray-100"
                     >
-                      <Link href="/profile" className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
-                        <FontAwesomeIcon icon={faUser} className="w-4 h-4 mr-2" />
+                      <Link href="/profile" className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-50">
+                        <FontAwesomeIcon icon={faUser} className="w-4 h-4 mr-3" />
                         Profile
                       </Link>
-                      <Link href="/bookmarks" className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
-                        <FontAwesomeIcon icon={faBookmark} className="w-4 h-4 mr-2" />
+                      <Link href="/bookmarks" className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-50">
+                        <FontAwesomeIcon icon={faBookmark} className="w-4 h-4 mr-3" />
                         Bookmarks
                       </Link>
-                      <Link href="/settings" className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
-                        <FontAwesomeIcon icon={faCog} className="w-4 h-4 mr-2" />
+                      <Link href="/settings" className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-50">
+                        <FontAwesomeIcon icon={faCog} className="w-4 h-4 mr-3" />
                         Settings
                       </Link>
                       <hr className="my-2" />
-                      <button className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100">
-                        <FontAwesomeIcon icon={faSignOut} className="w-4 h-4 mr-2" />
+                      <button className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-50">
+                        <FontAwesomeIcon icon={faSignOut} className="w-4 h-4 mr-3" />
                         Sign Out
                       </button>
                     </motion.div>
@@ -147,20 +147,20 @@ export default function Navbar() {
             </div>
 
             {/* Mobile menu button */}
-            <div className="md:hidden flex items-center space-x-4">
+            <div className="md:hidden flex items-center space-x-2">
               <button
                 onClick={() => setIsSearchOpen(true)}
-                className="text-gray-600 hover:text-gray-900"
+                className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-full"
                 aria-label="Search"
               >
                 <FontAwesomeIcon icon={faSearch} className="w-5 h-5" />
               </button>
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="text-gray-600 hover:text-gray-900"
+                className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-full"
                 aria-label="Toggle menu"
               >
-                <FontAwesomeIcon icon={isOpen ? faTimes : faBars} className="w-6 h-6" />
+                <FontAwesomeIcon icon={isOpen ? faTimes : faBars} className="w-5 h-5" />
               </button>
             </div>
           </div>
@@ -173,19 +173,34 @@ export default function Navbar() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-white border-t border-gray-200"
+              className="md:hidden bg-white border-t border-gray-100 overflow-hidden"
             >
-              <div className="px-4 py-2 space-y-1">
+              <div className="max-w-7xl mx-auto px-4 py-3 space-y-1">
                 {navItems.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}
-                    className="block px-3 py-2 text-gray-600 hover:text-primary-blue hover:bg-gray-50 rounded-md"
+                    className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-primary-blue hover:bg-blue-50 rounded-md"
                     onClick={() => setIsOpen(false)}
                   >
                     {item.name}
                   </Link>
                 ))}
+                <hr className="my-2" />
+                <Link
+                  href="/profile"
+                  className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-primary-blue hover:bg-blue-50 rounded-md"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Profile
+                </Link>
+                <Link
+                  href="/settings"
+                  className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-primary-blue hover:bg-blue-50 rounded-md"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Settings
+                </Link>
               </div>
             </motion.div>
           )}
