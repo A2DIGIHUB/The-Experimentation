@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { publications, Publication } from '@/data/publications';
 import ArticleCard from '@/components/ArticleCard';
 import { motion } from 'framer-motion';
@@ -17,8 +17,8 @@ interface ArticleProps {
 function ArticleList() {
   const searchParams = useSearchParams();
   const [filteredArticles, setFilteredArticles] = useState(publications);
-  const category = searchParams?.get('category')?.toLowerCase();
-  const searchTerm = searchParams?.get('searchTerm')?.toLowerCase();
+  const category = searchParams?.get('category')?.toLowerCase() || '';
+  const searchTerm = searchParams?.get('searchTerm')?.toLowerCase() || '';
 
   useEffect(() => {
     let filtered = [...publications];
@@ -70,67 +70,23 @@ function ArticleListFallback() {
   );
 }
 
-function FeaturedArticle({ article }: ArticleProps) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-    >
-      <Link href={`/articles/${article.id}`} className="group">
-        <div className="relative h-[60vh] min-h-[400px] rounded-2xl overflow-hidden">
-          <Image
-            src={article.image}
-            alt={article.title}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 p-8">
-            <div className="flex items-center gap-4 text-sm text-gray-300 mb-4">
-              <span className="px-3 py-1 bg-blue-600 text-white rounded-full">
-                {article.category}
-              </span>
-              <div className="flex items-center">
-                <FontAwesomeIcon icon={faCalendarAlt} className="mr-2" />
-                {new Date(article.date).toLocaleDateString('en-US', {
-                  month: 'long',
-                  day: 'numeric',
-                  year: 'numeric'
-                })}
-              </div>
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 font-serif group-hover:text-blue-300 transition-colors">
-              {article.title}
-            </h2>
-            <p className="text-gray-300 text-lg mb-4 line-clamp-2">
-              {article.excerpt}
-            </p>
-            <div className="flex items-center gap-4 text-gray-300">
-              <div className="flex items-center">
-                <FontAwesomeIcon icon={faUser} className="mr-2" />
-                {article.author}
-              </div>
-              <div className="flex items-center">
-                <FontAwesomeIcon icon={faClock} className="mr-2" />
-                {Math.ceil(article.content.split(' ').length / 200)} min read
-              </div>
-            </div>
-          </div>
-        </div>
-      </Link>
-    </motion.div>
-  );
-}
-
 function SearchBar() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState(searchParams?.get('searchTerm') || '');
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-    const newParams = new URLSearchParams(searchParams?.toString());
-    newParams.set('searchTerm', e.target.value);
-    window.history.pushState(null, '', `?${newParams.toString()}`);
+    const value = e.target.value;
+    setSearchTerm(value);
+    
+    const params = new URLSearchParams(searchParams?.toString());
+    if (value) {
+      params.set('searchTerm', value);
+    } else {
+      params.delete('searchTerm');
+    }
+    
+    router.push(`/articles?${params.toString()}`);
   };
 
   return (
@@ -151,13 +107,20 @@ function SearchBar() {
 }
 
 function CategoryFilter() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const categories = Array.from(new Set(publications.map(p => p.category)));
+  const currentCategory = searchParams?.get('category') || '';
 
   const handleCategoryChange = (category: string) => {
-    const newParams = new URLSearchParams(searchParams?.toString());
-    newParams.set('category', category);
-    window.history.pushState(null, '', `?${newParams.toString()}`);
+    const params = new URLSearchParams(searchParams?.toString());
+    if (category) {
+      params.set('category', category);
+    } else {
+      params.delete('category');
+    }
+    
+    router.push(`/articles?${params.toString()}`);
   };
 
   return (
@@ -165,7 +128,7 @@ function CategoryFilter() {
       <button
         onClick={() => handleCategoryChange('')}
         className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
-          searchParams?.get('category') === '' 
+          currentCategory === '' 
             ? 'bg-blue-600 text-white' 
             : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
         }`}
@@ -177,7 +140,7 @@ function CategoryFilter() {
           key={category}
           onClick={() => handleCategoryChange(category)}
           className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
-            searchParams?.get('category') === category 
+            currentCategory === category 
               ? 'bg-blue-600 text-white' 
               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
           }`}
