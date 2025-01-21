@@ -74,39 +74,37 @@ interface RenderProps {
 }
 
 const ArticlePDF: React.FC<ArticlePDFProps> = ({ article, children }) => {
-  const renderContent = React.useCallback(({ loading, error }: RenderProps) => {
-    if (loading) {
-      return (
-        <button disabled className="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-400 cursor-wait">
-          <FontAwesomeIcon icon={faDownload} className="animate-pulse" />
-          <span>Preparing PDF...</span>
-        </button>
-      );
-    }
-
-    if (error) {
-      return (
-        <button disabled className="inline-flex items-center gap-2 px-4 py-2 text-sm text-red-600">
-          <FontAwesomeIcon icon={faDownload} />
-          <span>Error generating PDF</span>
-        </button>
-      );
-    }
-
-    return children || (
-      <button className="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:text-blue-600 transition-colors">
-        <FontAwesomeIcon icon={faDownload} />
-        <span>Download PDF</span>
-      </button>
-    );
-  }, [children]);
-
   return (
     <PDFDownloadLink
       document={<ArticlePDFDocument article={article} />}
       fileName={`${article.title.toLowerCase().replace(/\s+/g, '-')}.pdf`}
     >
-      {renderContent}
+      {({ blob, url, loading, error }: RenderProps) => {
+        if (loading) {
+          return (
+            <button disabled className="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-400 cursor-wait">
+              <FontAwesomeIcon icon={faDownload} className="animate-pulse" />
+              <span>Preparing PDF...</span>
+            </button>
+          );
+        }
+
+        if (error) {
+          return (
+            <button disabled className="inline-flex items-center gap-2 px-4 py-2 text-sm text-red-600">
+              <FontAwesomeIcon icon={faDownload} />
+              <span>Error generating PDF</span>
+            </button>
+          );
+        }
+
+        return children || (
+          <button className="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:text-blue-600 transition-colors">
+            <FontAwesomeIcon icon={faDownload} />
+            <span>Download PDF</span>
+          </button>
+        );
+      }}
     </PDFDownloadLink>
   );
 };
