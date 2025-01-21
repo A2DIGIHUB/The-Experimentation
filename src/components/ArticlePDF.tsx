@@ -43,6 +43,7 @@ const htmlToTextOptions: HtmlToTextOptions = {
 
 interface ArticlePDFProps {
   article: Publication;
+  children?: React.ReactNode;
 }
 
 const ArticlePDFDocument: React.FC<ArticlePDFProps> = ({ article }) => {
@@ -55,28 +56,34 @@ const ArticlePDFDocument: React.FC<ArticlePDFProps> = ({ article }) => {
           <Text style={styles.title}>{article.title}</Text>
           <Text style={styles.metadata}>Author: {article.author}</Text>
           <Text style={styles.metadata}>Date: {new Date(article.date).toLocaleDateString()}</Text>
-          <Text style={styles.metadata}>Category: {article.category}</Text>
         </View>
-        <View style={styles.section}>
-          <Text style={styles.content}>{article.excerpt}</Text>
-        </View>
-        <View style={styles.section}>
-          <Text style={styles.content}>{plainTextContent}</Text>
+        <View style={styles.content}>
+          <Text>{plainTextContent}</Text>
         </View>
       </Page>
     </Document>
   );
 };
 
-const ArticlePDF: React.FC<ArticlePDFProps> = ({ article }) => {
+const ArticlePDF: React.FC<ArticlePDFProps> = ({ article, children }) => {
   return (
-    <PDFDownloadLink 
+    <PDFDownloadLink
       document={<ArticlePDFDocument article={article} />}
       fileName={`${article.title.toLowerCase().replace(/\s+/g, '-')}.pdf`}
-      className="article-action-button flex items-center gap-2"
     >
-      <FontAwesomeIcon icon={faDownload} />
-      Download PDF
+      {({ loading }) => (
+        loading ? (
+          <button className="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-400 cursor-wait">
+            <FontAwesomeIcon icon={faDownload} className="animate-pulse" />
+            <span>Preparing PDF...</span>
+          </button>
+        ) : children || (
+          <button className="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:text-blue-600 transition-colors">
+            <FontAwesomeIcon icon={faDownload} />
+            <span>Download PDF</span>
+          </button>
+        )
+      )}
     </PDFDownloadLink>
   );
 };
