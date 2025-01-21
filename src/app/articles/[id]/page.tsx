@@ -9,7 +9,7 @@ import { faCalendarAlt, faUser, faClock, faShare, faArrowLeft, faDownload, faBoo
 import { publications } from '@/data/publications';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { ArticlePDFLink } from '@/components/ArticlePDF';
+import ArticlePDF from '@/components/ArticlePDF';
 
 export default function ArticlePage({ params }: { params: { id: string } }) {
   const [article, setArticle] = useState<any>(null);
@@ -138,7 +138,7 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
               <FontAwesomeIcon icon={faShare} />
               <span>Share</span>
             </button>
-            <ArticlePDFLink article={article} />
+            <ArticlePDF article={article} />
           </div>
         </div>
 
