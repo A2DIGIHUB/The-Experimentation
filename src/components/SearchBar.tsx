@@ -6,10 +6,11 @@ import { faSearch, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/navigation';
 
 interface SearchBarProps {
-  onSearch?: () => void;
+  onClose?: () => void;
+  onComplete?: () => void;
 }
 
-export default function SearchBar({ onSearch }: SearchBarProps) {
+export default function SearchBar({ onClose, onComplete }: SearchBarProps) {
   const [query, setQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
@@ -21,9 +22,10 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
 
     setIsSearching(true);
     try {
-      // TODO: Implement actual search functionality
-      router.push(`/search?q=${encodeURIComponent(query)}`);
-      onSearch?.(); // Call onSearch if provided
+      router.push(`/search?q=${encodeURIComponent(query.trim())}`);
+      onComplete?.();
+    } catch (error) {
+      console.error('Search error:', error);
     } finally {
       setIsSearching(false);
     }
