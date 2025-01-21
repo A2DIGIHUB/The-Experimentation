@@ -172,7 +172,7 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-full bg-gray-200 overflow-hidden relative">
                 <Image
-                  src={article.authorImage || '/images/default-avatar.png'}
+                  src="/images/default-avatar.png"
                   alt={article.author}
                   fill
                   className="object-cover"
