@@ -66,28 +66,58 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
   };
 
   return (
-    <article className="article-page">
-      <header className="article-header">
+    <article className="min-h-screen bg-white">
+      {/* Back to Articles Link - Mobile */}
+      <div className="md:hidden fixed top-16 left-0 right-0 z-50 bg-white border-b border-gray-100 p-2">
+        <Link 
+          href="/articles" 
+          className="inline-flex items-center gap-2 px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900"
+        >
+          <FontAwesomeIcon icon={faArrowLeft} className="w-4 h-4" />
+          <span>Back to Articles</span>
+        </Link>
+      </div>
+
+      {/* Article Header */}
+      <header className="relative h-[50vh] md:h-[70vh] bg-gray-900">
         <Image
           src={article.image}
           alt={article.title}
           fill
-          className="article-header-image"
+          className="object-cover opacity-70"
           priority
         />
-        <div className="article-header-overlay" />
-        <div className="article-container relative z-10 h-full flex flex-col justify-end pb-12">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex items-center gap-4 mb-6"
-          >
-            <span className="px-3 py-1 bg-blue-600 text-white text-sm rounded-full">
-              {article.category}
-            </span>
-            <div className="article-meta">
-              <div className="article-meta-item">
-                <FontAwesomeIcon icon={faCalendarAlt} />
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50" />
+        
+        <div className="absolute inset-0 flex items-end">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 w-full">
+            {/* Back to Articles Link - Desktop */}
+            <div className="hidden md:block mb-6">
+              <Link 
+                href="/articles" 
+                className="inline-flex items-center gap-2 text-gray-300 hover:text-white transition-colors"
+              >
+                <FontAwesomeIcon icon={faArrowLeft} className="w-4 h-4" />
+                <span>Back to Articles</span>
+              </Link>
+            </div>
+
+            <div className="flex flex-wrap gap-3 mb-4">
+              <span className="px-3 py-1 bg-blue-600 text-white text-sm rounded-full">
+                {article.category}
+              </span>
+              <span className="px-3 py-1 bg-gray-700 text-gray-100 text-sm rounded-full">
+                {readingTime} min read
+              </span>
+            </div>
+
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 font-serif">
+              {article.title}
+            </h1>
+
+            <div className="flex flex-wrap items-center gap-4 text-sm text-gray-300">
+              <div className="flex items-center gap-2">
+                <FontAwesomeIcon icon={faCalendarAlt} className="w-4 h-4" />
                 <time>
                   {new Date(article.date).toLocaleDateString('en-US', {
                     month: 'long',
@@ -96,105 +126,85 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
                   })}
                 </time>
               </div>
-              <div className="article-meta-item">
-                <FontAwesomeIcon icon={faUser} />
+              <div className="flex items-center gap-2">
+                <FontAwesomeIcon icon={faUser} className="w-4 h-4" />
                 <span>{article.author}</span>
               </div>
-              <div className="article-meta-item">
-                <FontAwesomeIcon icon={faClock} />
-                <span>{readingTime} min read</span>
-              </div>
             </div>
-          </motion.div>
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-5xl font-bold text-gray-900 mb-4"
-          >
-            {article.title}
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-xl text-gray-700"
-          >
-            {article.excerpt}
-          </motion.p>
+          </div>
         </div>
       </header>
 
-      <div className="article-container">
-        <div className="article-sidebar">
-          <div className="article-actions">
-            <button 
-              onClick={toggleBookmark}
-              className={`article-action-button ${isBookmarked ? 'text-blue-600' : 'text-gray-500'}`}
-            >
-              <FontAwesomeIcon icon={faBookmark} />
-              <span>{isBookmarked ? 'Bookmarked' : 'Bookmark'}</span>
+      {/* Article Content */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        {/* Article Actions */}
+        <div className="flex justify-end gap-4 mb-8">
+          <button
+            onClick={toggleBookmark}
+            className="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:text-blue-600 transition-colors"
+          >
+            <FontAwesomeIcon 
+              icon={faBookmark} 
+              className={isBookmarked ? 'text-blue-600' : ''} 
+            />
+            <span className="hidden sm:inline">
+              {isBookmarked ? 'Bookmarked' : 'Bookmark'}
+            </span>
+          </button>
+          <button
+            onClick={handleShare}
+            className="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:text-blue-600 transition-colors"
+          >
+            <FontAwesomeIcon icon={faShare} />
+            <span className="hidden sm:inline">Share</span>
+          </button>
+          <ArticlePDF article={article}>
+            <button className="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:text-blue-600 transition-colors">
+              <FontAwesomeIcon icon={faDownload} />
+              <span className="hidden sm:inline">Download PDF</span>
             </button>
-            <button onClick={handleShare} className="article-action-button">
-              <FontAwesomeIcon icon={faShare} />
-              <span>Share</span>
-            </button>
-            <ArticlePDF article={article} />
-          </div>
+          </ArticlePDF>
         </div>
 
-        <div className="article-content">
-          <ReactMarkdown 
-            remarkPlugins={[remarkGfm]}
-            components={{
-              h1: ({node, ...props}) => <h1 {...props} className="text-3xl font-bold mb-6" />,
-              h2: ({node, ...props}) => <h2 {...props} className="text-2xl font-bold mb-4" />,
-              h3: ({node, ...props}) => <h3 {...props} className="text-xl font-bold mb-3" />,
-              p: ({node, ...props}) => <p {...props} className="mb-4" />,
-              ul: ({node, ...props}) => <ul {...props} className="list-disc list-inside mb-4" />,
-              ol: ({node, ...props}) => <ol {...props} className="list-decimal list-inside mb-4" />,
-              li: ({node, ...props}) => <li {...props} className="mb-2" />,
-              a: ({node, ...props}) => <a {...props} target="_blank" rel="noopener noreferrer" />,
-              blockquote: ({node, ...props}) => <blockquote {...props} />,
-              code: ({node, className, children, ...props}: any) => {
-                const match = /language-(\w+)/.exec(className || '');
-                const isInline = !match;
-                return isInline ? (
-                  <code {...props} className={className}>
-                    {children}
-                  </code>
-                ) : (
-                  <pre className="p-4 bg-gray-100 rounded-lg overflow-x-auto">
-                    <code {...props} className={className}>
-                      {children}
-                    </code>
-                  </pre>
-                );
-              },
-            }}
-          >
+        {/* Article Body */}
+        <div className="prose prose-lg md:prose-xl max-w-none">
+          <ReactMarkdown remarkPlugins={[remarkGfm]} className="article-content">
             {article.content}
           </ReactMarkdown>
         </div>
 
-        <footer className="article-footer">
-          <div className="article-tags">
-            <span className="text-sm text-gray-600">Related Topics:</span>
-            <div className="flex flex-wrap gap-2 mt-2">
-              {['Maternal Health', 'Healthcare', 'Africa', 'Research'].map((tag) => (
-                <span 
-                  key={tag}
-                  className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full hover:bg-gray-200 cursor-pointer"
-                >
-                  {tag}
-                </span>
-              ))}
+        {/* Article Footer */}
+        <footer className="mt-12 pt-8 border-t border-gray-200">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-gray-200 overflow-hidden relative">
+                <Image
+                  src={article.authorImage || '/images/default-avatar.png'}
+                  alt={article.author}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div>
+                <h3 className="font-medium text-gray-900">{article.author}</h3>
+                <p className="text-sm text-gray-600">Author</p>
+              </div>
             </div>
-          </div>
-          <div className="article-nav">
-            <Link href="/articles" className="article-nav-link">
-              <FontAwesomeIcon icon={faArrowLeft} />
-              <span>Back to Articles</span>
-            </Link>
+            <div className="flex gap-4">
+              <button
+                onClick={handleShare}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                <FontAwesomeIcon icon={faShare} />
+                <span>Share Article</span>
+              </button>
+              <ArticlePDF article={article}>
+                <button className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                  <FontAwesomeIcon icon={faDownload} />
+                  <span>Download</span>
+                </button>
+              </ArticlePDF>
+            </div>
           </div>
         </footer>
       </div>
